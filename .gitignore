@@ -1,0 +1,16 @@
+# ignore all files
+/*
+
+# but not directories (if a directory is once ignored, git will never
+# look what is inside)
+#!*/
+
+#!/1/early.txt
+#!/1/a/
+
+
+# of course .gitignore must never be ignored
+!/.gitignore
+
+# list configuration files
+
