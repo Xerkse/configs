@@ -1,0 +1,23 @@
+#!/bin/sh
+
+echo $PATH
+dirPath=$(pwd)
+goodImages=$(nsxiv -o -t $dirPath)
+declare -a imageOptions=(
+"copyNdelete"
+"move"
+"delete"
+)
+echo "DMENU, waiting for you"
+choice=$(printf '%s\n' "${imageOptions[@]}" | dmenu -l 10 -p "what now:")
+echo "NICE, will be dont in a bit"
+
+if [[ "$choice" == "delete" ]]; then
+        rm -r $dirPath
+elif [[ "$choice" == "move" ]]; then
+        mv $goodImages "/home/xerkse/Pictures/wallpapers/temp"
+elif [[ "$choice" == "copyNdelete" ]]; then
+        mv $goodImages "/home/xerkse/Pictures/wallpapers/temp"
+        cd "../"
+        rm -r $dirPath
+fi

@@ -1,0 +1,40 @@
+#!/bin/sh
+
+# this script manages the general power options without adding many keybindings to dwm
+
+#array with options
+declare -a powerOptionsList=(
+"shutdown"
+"reboot"
+"out"
+"lock"
+"black"
+"quit"
+)
+
+#get the users choice out of the options
+choice=$(printf '%s\n' "${powerOptionsList[@]}" | dmenu -l 10 -p "power options:")
+
+#stop
+if [[ "$choice" == "quit" ]]; then
+	echo "program terminated"
+	exit 1
+
+#shutdoen
+elif [[ "$choice" == "shutdown" ]]; then
+	shutdown now -P
+
+#reboot
+elif [[ "$choice" == "reboot" ]]; then
+	reboot
+
+#logout
+elif [[ "$choice" == "out" ]]; then
+	pkill -KILL -u xerkse
+
+#lockscreen
+elif [[ "$choice" == "lock" ]]; then
+        setsid -f slock && systemctl suspend
+elif [[ "$choice" == "black" ]]; then
+        systemctl suspend &
+fi

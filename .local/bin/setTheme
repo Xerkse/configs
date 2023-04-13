@@ -1,0 +1,5 @@
+#!/bin/sh
+imagePath="$(find ~/Pictures/wallpapers -type f | shuf -n 1)"
+echo "$imagePath" >> ~/.mylog &
+feh --bg-fill $imagePath && echo "set image to $imagePath" 
+#feh --bg-scale $imagePath && echo "set image to $imagePath" 

@@ -1,0 +1,5 @@
+#!/bin/sh
+
+imagePath=$(tail -n 1 ~/.mylog)
+rm $imagePath && echo "removed $imagePath" &
+setTheme
