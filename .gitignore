@@ -1,16 +1,20 @@
-# ignore all files
+# Ignore everything in repository root 
 /*
 
-# but not directories (if a directory is once ignored, git will never
-# look what is inside)
-#!*/
-
-#!/1/early.txt
-#!/1/a/
-
-
-# of course .gitignore must never be ignored
+# Files to not ignore
 !/.gitignore
+#
+#!/.config/lf/
+#!/.config/newsboat/
+#!/.config/nvim/
+#!/.config/qBittorrent/qBittorrent.conf
+#!/.config/sxiv/
+#!/.config/zathura/
+#
+#!/.local/bin/
+#
+#!/.bashrc
+#!/.bashrc_profile
+#!/.xinitrc
 
-# list configuration files
 
