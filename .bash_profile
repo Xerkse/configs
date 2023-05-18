@@ -10,7 +10,7 @@
 export PATH="$HOME/.local/bin:$PATH"
 export EDITOR="nvim"
 export TERMINAL="st"
-export BROWSER="firefox"
+export BROWSER="librewolf"
 export SUDO_ASKPASS="$HOME/.local/bin/askpass"
 
 #setxkbmap -option caps:swapescape
