@@ -1,6 +1,7 @@
 include /usr/share/doc/newsboat/contrib/colorschemes/inkpot
 #show-read-feeds no
-auto-reload yes
+auto-reload no
+prepopulate-query-feeds yes
 
 #external-url-viewer "urlscan -dc -r 'linkhandler {}'"
 
@@ -24,11 +25,13 @@ bind-key N prev-unread
 #bind-key x pb-delete
 
 
-browser $BROWSER
+browser "$BROWSER"
 macro , open-in-browser
 #macro t set browser "qndl" ; open-in-browser ; set browser $BROWSER
 #macro a set browser "tsp yt-dlp --embed-metadata -xic -f bestaudio/best" ; open-in-browser ; set browser $BROWSER
-macro v set browser "setsid -f mpv --fs" ; open-in-browser ; set browser $BROWSER
+macro v set browser "setsid -f vlc --fullscreen"; open-in-browser ; set browser $BROWSER
+#
+
 #macro w set browser "lynx" ; open-in-browser ; set browser $BROWSER
 #macro d set browser "dmenuhandler" ; open-in-browser ; set browser $BROWSER
 #macro c set browser "echo %u | xclip -r -sel c" ; open-in-browser ; set browser $BROWSER

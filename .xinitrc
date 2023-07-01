@@ -79,6 +79,7 @@ setxkbmap -option caps:swapescape &
 
 while true; do
 	dwm 2> ~/.dwm.log
+        setxkbmap -option caps:swapescape &
 done
 
 #exec dwm
