@@ -16,6 +16,8 @@ https://lukesmith.xyz/rss.xml
 "query:video_essay:(unread = \"yes\") and (tags # \"video_essay\")"
 
 ++YOUTUBE++
+https://www.youtube.com/feeds/videos.xml?channel_id=UCl2mFZoRqjw_ELax4Yisf6w "yt" "~Louis Rossmann" "tech"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCV5vCi3jPJdURZwAOO_FNfQ "yt" "~The Thought Emporium" "science" "video_essay" 
 https://www.youtube.com/feeds/videos.xml?channel_id=UCXgxNzAgZ1GExhTW4X1mUrg "yt" "~Marc Rebillet" "entertainement"
 https://www.youtube.com/feeds/videos.xml?channel_id=UCXkNod_JcH7PleOjwK_8rYQ "yt" "~Polyphonic" "video_essay" 
 https://www.youtube.com/feeds/videos.xml?channel_id=UC0VVYtw21rg2cokUystu2Dw "yt" "~SmallAnt" "entertainement" "video_game"

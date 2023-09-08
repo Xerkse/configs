@@ -128,6 +128,7 @@ map a push A<a-b> # after extension
 #map <c-e> down
 #map <c-y> up
 map V $(st -e $EDITOR $fx &)
+map <c-v> $(setsid -f vlc $fx &)
 
 #map W $setsid -f $TERMINAL >/dev/null 2>&1
 
