@@ -61,7 +61,7 @@ setDwmStatusBar &
 #xcompmgr -o1 &
 
 #fix resolution to 1920x1080 and set theme if it succedes 
-xrandr --output eDP1 --scale 0.5x0.5 --panning 1920x1080
+xrandr --output eDP1 --scale 0.5x0.5 --panning 1920x1080 
 xrandr --output eDP2 --scale 0.5x0.5 --panning 1920x1080
 setTheme
 
@@ -73,13 +73,15 @@ xinput set-prop "TPPS/2 Elan TrackPoint" "libinput Accel Speed" -0.5 &
 xinput set-prop "TPPS/2 Elan TrackPoint" "Coordinate Transformation Matrix" 1 0 0 0 1 0 0 0 1 &
 xinput set-prop "TPPS/2 Elan TrackPoint" "libinput Scrolling Pixel Distance" 25 &
 
-#fix escape
-setxkbmap -option caps:swapescape &
 
+#notifications
+dunst &
 
 while true; do
-	dwm 2> ~/.dwm.log
+	#fix escape
         setxkbmap -option caps:swapescape &
+	#start dwm
+	dwm 2> ~/.dwm.log
 done
 
 #exec dwm

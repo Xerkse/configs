@@ -49,12 +49,7 @@ require('lazy').setup({
 
       -- Useful status updates for LSP
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      {
-        'j-hui/fidget.nvim',
-        tag = "legacy",
-        -- event = "LspAttach",
-        opts = {},
-      },
+      { 'j-hui/fidget.nvim', tag = "legacy", opts = {} },
 
       -- Additional lua configuration, makes nvim stuff amazing!
       'folke/neodev.nvim',
@@ -65,13 +60,11 @@ require('lazy').setup({
     'hrsh7th/nvim-cmp',
     dependencies = {
       -- Snipet Engine & its associated nvim-cmp
-      'L3MON4D3/LuaSnip',
-      'saadparwaiz1/cmp_luasnip',
+      -- 'L3MON4D3/LuaSnip',
+      -- 'saadparwaiz1/cmp_luasnip',
 
       -- LSP completion capabilities
       'hrsh7th/cmp-nvim-lsp',
-
-
     },
   },
 --	use'hrsh7th/nvim-cmp'
@@ -113,15 +106,11 @@ require('lazy').setup({
       },
     },
   },
-
-  { -- Add indentation guides even on blank lines
-    'lukas-reineke/indent-blankline.nvim',
-    -- Enable `lukas-reineke/indent-blankline.nvim`
-    -- See `:help indent_blankline.txt`
-    opts = {
-      char = '┊',
-      show_trailing_blankline_indent = false,
-    },
+  -- See `:help indent_blankline.txt`
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    main = "ibl",
+    opts = {},
   },
 
   -- "gc" to comment visual regions/lines
@@ -156,19 +145,23 @@ require('lazy').setup({
  -- DEBUGGING
   {
     -- Creates a beautiful debugger UI
-    'rcarriga/nvim-dap-ui',
+    'mfussenegger/nvim-dap',
     dependencies = {
-      'mfussenegger/nvim-dap',
+      -- Creates a beautiful debugger UI
+      'rcarriga/nvim-dap-ui',
+
+      -- Installs the debug adapters for you
+      'williamboman/mason.nvim',
+      'jay-babu/mason-nvim-dap.nvim',
+
+      -- denugger text
+      'theHamsta/nvim-dap-virtual-text',
+      -- Add your own debuggers here
+      'leoluz/nvim-dap-go',
+      'simrat39/rust-tools.nvim', --new
+      'nvim-lua/plenary.nvim', -- new
     },
   },
-  'theHamsta/nvim-dap-virtual-text',
-  -- Installs the debug adapters for you
-  'williamboman/mason.nvim',
-  'jay-babu/mason-nvim-dap.nvim',
-  -- Add your own debuggers here
-  'leoluz/nvim-dap-go',
-  'simrat39/rust-tools.nvim', --new
-  'nvim-lua/plenary.nvim', -- new
 }, {})
 
 

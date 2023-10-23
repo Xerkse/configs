@@ -15,7 +15,8 @@ https://lukesmith.xyz/rss.xml
 "query:video_game:(unread = \"yes\") and (tags # \"video_game\")"
 "query:video_essay:(unread = \"yes\") and (tags # \"video_essay\")"
 
-++YOUTUBE++
+++Channels++
+https://www.youtube.com/feeds/videos.xml?channel_id=UCFbtcTaMFnOAP0pFO1L8hVw "yt" "~Kyle Hill" "science" "entertainement"
 https://www.youtube.com/feeds/videos.xml?channel_id=UCl2mFZoRqjw_ELax4Yisf6w "yt" "~Louis Rossmann" "tech"
 https://www.youtube.com/feeds/videos.xml?channel_id=UCV5vCi3jPJdURZwAOO_FNfQ "yt" "~The Thought Emporium" "science" "video_essay" 
 https://www.youtube.com/feeds/videos.xml?channel_id=UCXgxNzAgZ1GExhTW4X1mUrg "yt" "~Marc Rebillet" "entertainement"
@@ -150,7 +151,7 @@ https://www.youtube.com/feeds/videos.xml?channel_id=UC3jSNmKWYA04R47fDcc1ImA "yt
 https://www.youtube.com/feeds/videos.xml?channel_id=UC4aOa6Q-cHMXaNixIi26q3Q "yt" "~GlytchTech" "tech"
 https://www.youtube.com/feeds/videos.xml?channel_id=UC5KDiSAFxrDWhmysBcNqtMA "yt" "~Eric Murphy" "tech"
 https://www.youtube.com/feeds/videos.xml?channel_id=UC5UAwBUum7CPN5buc-_N1Fw "yt" "~Linux Experiment" "tech"
-https://www.youtube.com/feeds/videos.xml?channel_id=UC7YOGHUfC1Tb6E4pudI9STA "yt" "~Mental Outlaw" "tech"
+https://odysee.com/$/rss/@AlphaNerd:8 "yt" "~Mental Outlaw" "tech"
 https://www.youtube.com/feeds/videos.xml?channel_id=UC8ENHE5xdFSwx71u3fDH5Xw "yt" "~ThePrimeagen" "tech"
 https://www.youtube.com/feeds/videos.xml?channel_id=UC8JrOitrLRmBTYty6kzIFFQ "yt" "~Privacy X" "tech"
 https://www.youtube.com/feeds/videos.xml?channel_id=UC9-y-6csu5WGm29I7JiwpnA "yt" "~Computerphile" "tech"

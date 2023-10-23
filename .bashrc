@@ -2,7 +2,6 @@
 # ~/.bashrc
 #
 
-#jdownloader fix
 #_JAVA_OPTIONS: -Dawt.useSystemAAFontSettings=on -Dswing.aatext=true
 export _JAVA_AWT_WM_NONREPARENTING=1
 
