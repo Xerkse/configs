@@ -1,29 +1,19 @@
 #!/bin/sh
 
 #maim ~/Pictures/\"Screen Shots\"/\"Screenshot_%Y-%m-%d-%T.png\" -d 2
-declare -a screenshotOptionsList=(
-"all monitors"
-"selection"
-"quit"
-)
-
-
-#get the users choice out of the options
-choice=$(printf '%s\n' "${screenshotOptionsList[@]}" | dmenu -l 10 -p "screenshot options:")
-
-#quit
-if [[ "$choice" == "quit" ]]; then
-	echo "program terminated"
-	exit 1
-fi
-
-
+#
+choice=$(printf "all monitors\\nselection\\nquit" | dmenu -l 10 -p "screenshot options:")
 fileName="$(date +%Y%m%d%H%M%S).png"
 
-#all
-if [[ "$choice" == "all monitors" ]]; then
-        maim ~/Pictures/Screenshots/$fileName -u -d 1
-#selection
-elif [[ "$choice" == "selection" ]]; then
-        maim ~/Pictures/Screenshots/$fileName -u -s
-fi
+clip_file () {
+	echo "$HOME/Pictures/Screenshots/$fileName" | xclip -selection clipboard
+}
+
+
+case $choice in
+        all\ monitors) maim $HOME/Pictures/Screenshots/$fileName -uoD -d 1 && clip_file;;
+	selection) maim "$HOME/Pictures/Screenshots/$fileName" -usoD && clip_file;;
+	*) echo "program terminated" && exit 1;;
+esac
+
+

@@ -32,6 +32,8 @@ vim.o.ignorecase = true
 vim.o.smartcase = true
 -- Keep signcolumn on by default(its that bar at the left next to the numbers where lsp things go. Helps make screen not shift around like it was)
 vim.wo.signcolumn = 'yes'
+-- add nrformat letters to autoincrement numners, letters, hex, otcal
+vim.opt.nrformats = {"alpha","hex","bin"}
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
 
