@@ -47,9 +47,8 @@ setDwmStatusBar &
 #xcompmgr -o1 &
 
 #fix resolution to 1920x1080 and set theme if it succedes 
-xrandr --output eDP1 --scale 0.5x0.5 --panning 1920x1080 
-xrandr --output eDP2 --scale 0.5x0.5 --panning 1920x1080
-setTheme
+xrandr --output eDP-2 --scale 0.5x0.5 --panning 1920x1080 &
+xrandr --output eDP-1 --scale 0.5x0.5 --panning 1920x1080 &
 
 #fix touchpad speed
 xinput set-prop "SynPS/2 Synaptics TouchPad" "Coordinate Transformation Matrix" 1 0 0 0 1 0 0 0 1 &
@@ -67,7 +66,8 @@ while true; do
 	#fix escape
         setxkbmap -option caps:swapescape &
 	#start dwm
-	dwm 2> ~/.dwm.log
+	#sleep 3 && setTheme &
+	setTheme && dwm 2> ~/.dwm.log
 done
 
 #exec dwm

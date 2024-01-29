@@ -43,5 +43,3 @@ alias ls='ls -lah --color=auto'
 
 #for ssh
 alias phone='-p 8022 u0_a315@192.168.1.11'
-
-. "$HOME/.cargo/env"

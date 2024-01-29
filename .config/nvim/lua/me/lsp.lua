@@ -50,7 +50,7 @@ end
 local servers = {
   -- clangd = {},
    texlab = {},
-   gopls = {},
+   --gopls = {},
    bashls = {},
    pyright = {},
    --rust_analyzer = {},

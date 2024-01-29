@@ -10,7 +10,7 @@
 export PATH="$HOME/.local/bin:/otp:$PATH"
 export EDITOR="nvim"
 export TERMINAL="st"
-export BROWSER="librewolf"
+export BROWSER="firefox"
 export SUDO_ASKPASS="$HOME/.local/bin/askpass"
 
 #setxkbmap -option caps:swapescape
