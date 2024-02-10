@@ -1,0 +1,10 @@
+#!/bin/sh
+
+#get the users choice out of the options
+choice=$(printf "enable\\ndisable" | dmenu -l 2 -p "hibernate/suspend/sleep: ")
+
+case $choice in
+    enable)sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target;;
+    disable)sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target;;
+    *)exit;;
+esac

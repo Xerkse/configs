@@ -1,0 +1,97 @@
+#!/bin/sh
+
+#pavucontrol or pulsemixer for seding default audio device
+# better functoin for when I let the monitor be 4k
+# getdim() { xrandr | sed -n "s;\s*\([0-9]\+x[0-9]\+\).*\*.*;\1;p" ;}
+getdim() { echo "1920x1080" ;}
+    #xrandr | sed -n "s/\s*\([0-9]\+x[0-9]\+\).*\*.*/\1/p"
+
+killrecording() {
+    recpid="$(cat /tmp/recordingpid)"
+    kill -15 "$recpid"
+    rm -f /tmp/recordingpid
+}
+
+selectvideo() {
+    slop -f "%x %y %w %h" > /tmp/slop
+    read -r X Y W H < /tmp/slop
+    rm /tmp/slop
+
+    ffmpeg \
+        -f x11grab \
+        -framerate 30 \
+        -video_size "$W"x"$H" \
+        -i :0.0+"$X,$Y" \
+        -c:v libx264 -qp 0 -r 30 \
+        "$HOME/box-$(date +"%y%m%d-%H%M-%S").mkv" & \
+        echo $! > /tmp/recordingpid
+}
+
+webcam() {
+    ffmpeg \
+        -f v412 \
+        -i /dev/video0 \
+        -video-size 1920x1080 \
+        "$HOME/box-$(date +"%y%m%d-%H%M-%S").mkv" & \
+        echo $! > /tmp/recordingpid
+}
+
+audio () {
+    ffmpeg \
+        -f alsa -i default \
+        -c:a flac \
+        "$HOME/audio-$(date +"%y%m%d-%H%M-%S").flac" & \
+        echo $! > /tmp/recordingpid
+}
+
+screencast() {
+    ffmpeg -y \
+        -f x11grab \
+        -framerate 30 \
+        -s "$(getdim)" \
+        -i "$DISPLAY" \
+        -r 24 \
+        -use_wallclock_as_timestamps 1 \
+        -f alsa -thread_queue_size 1024 -i default \
+        -c:v h264 \
+        -crf 0 -preset ultrafast -c:a aac \
+        "$HOME/screencast-$(date '+%y%m%d-%H%M-%S').mp4" & \
+        echo $! > /tmp/recordingpid
+}
+
+video() {
+    ffmpeg \
+        -f x11grab \
+        -framerate 30 \
+        -s "$(getdim)" \
+        -i "$DISPLAY" \
+        -c:v libx264 -qp 0 -r 30 \
+        "$HOME/video-$(date '+%y%m%d-%H%M-%S').mkv" & \
+        echo $! > /tmp/recordingpid
+}
+
+askrecording() {
+    choice=$(printf "screencast(AV)\\nvideo(V)\\nselected video(V)\\naudio(A)\\nwebcam" | dmenu -i -p "Select recordig style: ")
+    case "$choice" in
+        screencast*) screencast;;
+        video*) video;;
+        selected*) selectvideo;;
+        audio*) audio;;
+        webvam*) webcam;;
+    esac
+}
+
+asktoend() {
+    response=$(printf "No\\nYes" | dmenu -i -p "Recording still active. End recording?") && [ "$response" = "Yes" ] && killrecording
+}
+
+case "$1" in
+	screencast) screencast;;
+        video) video;;
+	selectvideo) selectvideo;;
+	audio) audio;;
+        webcam) webcam;;
+	kill) killrecording;;
+	*) ([ -f /tmp/recordingpid ] && asktoend && exit) || askrecording;;
+esac
+

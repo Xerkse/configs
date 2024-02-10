@@ -1,0 +1,13 @@
+#!/bin/sh
+# command to set webcam resolution v4l2-ctl --set-fmt-video=height=720
+
+mpv --profile=low-latency \
+    --untimed \
+    --cursor-autohide=no \
+    --window-minimized=yes \
+    --no-border \
+    --ontop \
+    --no-input-cursor \
+    --fullscreen=no \
+    --title="Webcam" \
+    /dev/video0
