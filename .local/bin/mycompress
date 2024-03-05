@@ -1,0 +1,7 @@
+#!/bin/bash
+
+base=$(basename "$1")
+ext="$(base##*.)
+base="$(base%.*)
+
+ffmpeg -i "$1" -c:v h264 -c:a aac "$base"_compressed."$ext"
