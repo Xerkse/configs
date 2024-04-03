@@ -70,4 +70,4 @@ while true; do
 	setTheme && dwm 2> ~/.dwm.log
 done
 
-#exec dwm
+#exec dwma

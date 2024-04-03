@@ -2,7 +2,7 @@
 
 make_bar_string ()
 {
-    internal_battery_percentage=$(acpi -s | tail -n 1| sed 's;.*, \([[:digit:]]\+%\).*;\1;')
+    internal_battery_percentage=$(acpi -s | tail -n 1 | sed 's;.*, \([[:digit:]]\+%\).*;\1;')
     date_time=$(date +'%a %b(%m)-%d-%Y %I:%M %p')
 
     xsetroot -name "$internal_battery_percentage $date_time"
