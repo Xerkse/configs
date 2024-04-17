@@ -1,3 +1,4 @@
 # copy selection to system clipboard
 set selection-clipboard clipboard
+set sandbox none
 

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+zbarimg "$(find "/home/xerkse/Pictures/Screenshots/" -type f | tail -n 1)"

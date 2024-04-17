@@ -37,7 +37,7 @@ cmd open ${{
        	#        lf -remote "send toggle"
        	#    done &
         #    ;;
-	image/*) setsid -f nsxiv "$fx" ;;
+	image/*) setsid -f sxiv "$fx" ;;
 	audio/*) setsid -f mpv --audio-display=embedded-first --cover-art-file="$(tail -6 ~/.mylog | head -5 | shuf -n 1)" $fx >/dev/null 2>&1 ;;
 	video/*) setsid -f mpv --no-terminal "$fx" >/dev/null 2>&1 ;;
 	#application/pdf|application/vnd*|application/epub*) setsid -f zathura $fx >/dev/null 2>&1 ;;
@@ -129,6 +129,7 @@ map a push A<a-b> # after extension
 #map <c-e> down
 #map <c-y> up
 map V $(st -e $EDITOR $fx &)
+map S $(setsid -f sent $fx &)
 map <c-v> $(setsid -f vlc $fx &)
 
 #map W $setsid -f $TERMINAL >/dev/null 2>&1

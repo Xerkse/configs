@@ -1,0 +1,3 @@
+#!/bin/bash
+
+sudo mount -t cifs //192.168.1.10/xerkse_dataset /mnt -o credentials=~/.smbcred

@@ -1,0 +1,18 @@
+#!/bin/sh
+tree -ifF | grep "...*/$" | xargs -d$'\n' -I '{}' mkdir -p "../new/{}"
+# tree -if | grep ".*.\(mp3\|m4a\)$" | xargs -I '{}' ffmpeg -y -i "{}" -af "loudnorm" "../new/{}"
+touch ../tempfile.txt
+
+# tree -if | grep ".*.\(mp3\|m4a\)$" | sed "s/'/\\\\'/g" | parallel -j 10 "ffmpeg -y -i {} -filter:a loudnorm ../new/{}"
+for file in $(tree -if | grep ".*.\(mp3\|m4a\)$")
+do
+	echo "ffmpeg -y -i \"$file\" -filter:a [0:1]loudnorm -vcodec mjpeg \"../new/$file\" -vn -sn -f null" >> ../tempfile.txt
+done
+# echo "ffmpeg -y -i \"$file\" -filter:a [0:1]loudnorm \"../new/${file%.*}m4a\" -vn -sn -f null" >> ../tempfile.txt
+parallel -j 10 < ../tempfile.txt
+# rm tempfile.txt
+
+# ffmpeg -y -i "./ZZ_Top/Ultimate_Collection/Gimme_All_Your_Lovin\'-ZZ_Top.mp3" -af 'loudnorm' "../new/./ZZ_Top/Ultimate_Collection/Gimme_All_Your_Lovin\'-ZZ_Top.mp3"
+wait
+
+echo "All Done (:"
