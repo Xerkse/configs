@@ -1,3 +1,7 @@
 #!/bin/bash
 
 sudo mount -t cifs //192.168.1.10/xerkse_dataset /mnt -o credentials=~/.smbcred
+
+#COMMANDS
+
+#rsync -aAXv /home/xerkse/Documents /home/xerkse/.password-store /mnt/bakups/

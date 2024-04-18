@@ -15,8 +15,9 @@ stty -ixon #Disable ctrl-s and ctrl-q.
 shopt -s autocd
 HISTSIZE= HISTFILESIZE= #Infinite history.
 
-#user colors
-PS1='\[\033[31m\]<\D{%R %x}>\[\033[32m\]\u@\h:\[\033[36m\]\w\[\033[00m\]$ '
+#Red="\[\033[0;31m\]"
+#export PS1='${Red}<\D{%R %x}>\[\033[32m\]\u@\h:\[\033[36m\]\w\[\033[00m\]$ '
+export PS1='\[\033[0;31m\]<\D{%R %x}>\[\033[32m\]\u@\h:\[\033[36m\]\w\[\033[00m\]$ '
 
 #ising LF to cd into directory with bound to Ctrl + o to blank line theh run lfcd
 LFCD="/home/xerkse/.config/lf/lfcd.sh"
