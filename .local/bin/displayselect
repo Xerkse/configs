@@ -3,6 +3,10 @@
 # A UI for detecting and selecting all displays. Probes xrandr for connected
 # displays and lets user select one to use. User may also select "manual
 # selection" which opens arandr.
+get_direction() {
+	direction=$(printf "left-of\\nright-of\\nabove\nbelow" | dmenu -i -p "What side of $primary should $secondary be on?")
+        echo "$direction"
+}
 
 twoscreen() { # If multi-monitor is selected and there are two screens.
 
@@ -10,54 +14,65 @@ twoscreen() { # If multi-monitor is selected and there are two screens.
     # Mirror displays using native resolution of external display and a scaled
     # version for the internal display
     if [ "$mirror" = "yes" ]; then
-        external=$(echo "$screens" | dmenu -i -p "Optimize resolution for:")
-        internal=$(echo "$screens" | grep -v "$external")
+        primary=$(echo "$screens" | dmenu -i -p "Optimize resolution for:")
+        secondary=$(echo "$screens" | grep -v "$primary")
 
-        res_external=$(xrandr --query | sed -n "/^$external/,/\+/p" | \
+        res_external=$(xrandr --query | sed -n "/^$primary /,/\+/p" | \
             tail -n 1 | awk '{print $1}')
-        res_internal=$(xrandr --query | sed -n "/^$internal/,/\+/p" | \
+        res_internal=$(xrandr --query | sed -n "/^$secondary /,/\+/p" | \
             tail -n 1 | awk '{print $1}')
 
-        res_ext_x=$(echo "$res_external" | sed 's/x.*//')
-        res_ext_y=$(echo "$res_external" | sed 's/.*x//')
-        res_int_x=$(echo "$res_internal" | sed 's/x.*//')
-        res_int_y=$(echo "$res_internal" | sed 's/.*x//')
+        res_prm_x=$(echo "$res_external" | sed 's/x.*//')
+        res_prm_y=$(echo "$res_external" | sed 's/.*x//')
+        res_sec_x=$(echo "$res_internal" | sed 's/x.*//')
+        res_sec_y=$(echo "$res_internal" | sed 's/.*x//')
 
-        scale_x=$(echo "$res_ext_x / $res_int_x" | bc -l)
-        scale_y=$(echo "$res_ext_y / $res_int_y" | bc -l)
+        scale_x=$(echo "$res_prm_x / $res_sec_x" | bc -l)
+        scale_y=$(echo "$res_prm_y / $res_sec_y" | bc -l)
 
-        xrandr --output "$external" --auto --scale 1.0x1.0 \
-            --output "$internal" --auto --same-as "$external" \
+        xrandr --output "$primary" --auto --scale 1.0x1.0 \
+            --output "$secondary" --auto --same-as "$primary" \
             --scale "$scale_x"x"$scale_y"
     else
 
         primary=$(echo "$screens" | dmenu -i -p "Select primary display:")
         secondary=$(echo "$screens" | grep -v "$primary")
-        direction=$(printf "left\\nright" | dmenu -i -p "What side of $primary should $secondary be on?")
-        xrandr --output "$primary" --auto --scale 1.0x1.0 --output "$secondary" --"$direction"-of "$primary" --auto --scale 1.0x1.0
+        #direction=$(printf "left\\nright" | dmenu -i -p "What side of $primary should $secondary be on?")
+        direction="$(get_direction)"
+        xrandr --output "$primary" --auto --scale 1.0x1.0 --output "$secondary" --"$direction" "$primary" --auto --scale 1.0x1.0
     fi
+    postrun
     }
 
 morescreen() { # If multi-monitor is selected and there are more than two screens.
 	primary=$(echo "$screens" | dmenu -i -p "Select primary display:")
 	secondary=$(echo "$screens" | grep -v "$primary" | dmenu -i -p "Select secondary display:")
-	direction=$(printf "left\\nright" | dmenu -i -p "What side of $primary should $secondary be on?")
+	#direction=$(printf "left-of\\nright-of\\nabove\nbelow" | dmenu -i -p "What side of $primary should $secondary be on?")
+        direction="$(get_direction)"
 	tertiary=$(echo "$screens" | grep -v "$primary" | grep -v "$secondary" | dmenu -i -p "Select third display:")
-	xrandr --output "$primary" --auto --output "$secondary" --"$direction"-of "$primary" --auto --output "$tertiary" --"$(printf "left\\nright" | grep -v "$direction")"-of "$primary" --auto
+	xrandr --output "$primary" --auto --output "$secondary" --"$direction" "$primary" --auto --output "$tertiary" --"$(printf "left\\nright" | grep -v "$direction")" "$primary" --auto
+        postrun
 	}
 
 multimon() { # Multi-monitor handler.
 	case "$(echo "$screens" | wc -l)" in
 		2) twoscreen ;;
 		*) morescreen ;;
-	esac ;}
+        esac ;
+}
 
 onescreen() { # If only one output available or chosen.
-	xrandr --output "$1" --auto --scale 1.0x1.0 $(echo "$allposs" | grep -v "\b$1" | awk '{print "--output", $1, "--off"}' | paste -sd ' ' -)
-	}
+        resolution=$(printf "auto\\n1920x1080" | dmenu -i -p "would you like to override default resolution?")
+        off_statements="$(echo "$allposs" | grep -v "\b$1" | awk '{print "--output", $1, "--off"}' | paste -sd ' ' -)"
+        case "$resolution" in
+	        "auto") xrandr --output "$1" --auto --scale 1.0x1.0 $off_statements ;;
+                *) xrandr --output "$1" --mode "$resolution" --scale 1.0x1.0 $off_statements ;;
+        esac
+        postrun
+}
 
 postrun() { # Stuff to run to clean up.
-	setbg		# Fix background if screen size/arangement has changed.
+	setTheme		# Fix background if screen size/arangement has changed.
 	{ killall dunst ; setsid -f dunst ;} >/dev/null 2>&1 # Restart dunst to ensure proper location on screen
 	}
 
@@ -79,4 +94,3 @@ case "$chosen" in
 	*) onescreen "$chosen" ;;
 esac
 
-postrun

@@ -3,7 +3,7 @@
 #maim ~/Pictures/\"Screen Shots\"/\"Screenshot_%Y-%m-%d-%T.png\" -d 2
 #
 choice=$(printf "all monitors\\nselection\\nquit" | dmenu -l 10 -p "screenshot options:")
-fileName="$(date +%Y%m%d%H%M%S).png"
+fileName="$(date +%Y%m%d%H%M%S).jpg"
 
 clip_file () {
 	echo "$HOME/Pictures/Screenshots/$fileName" | xclip -selection clipboard
