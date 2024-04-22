@@ -1,53 +1,44 @@
 #!/bin/sh
 
-declare -a pass_options=(
-"password"
-"username"
-"email"
-"website"
-"otp"
-"edit"
-"last"
-"quit"
-)
 
 #get the users choice out of the options
-category_choice=$(printf '%s\n' "${pass_options[@]}" | dmenu -l 10 -x -p "pass options:")
+category_choice=$(printf "password\nusername\nemail\nwebsite\notp\nedit\nlast\nquit" | dmenu -l 10 -x -p "pass options:")
 
 password_choice=""
-if [[ "$category_choice" == "last" ]]; then
+
+if [ "$category_choice" = "last" ]; then
     last_choice="$(cat ~/.password-store/last_choice.txt)" 
     password_choice=$last_choice
-    category_choice=$(printf '%s\n' "${pass_options[@]}" | dmenu -l 10 -x -p "pass options:")
+    category_choice=$(printf "password\nusername\nemail\nwebsite\notp\nedit\nlast\nquit" | dmenu -l 10 -x -p "pass options:")
 else
     password_choice=$(tree -f -i ~/.password-store | grep ".*\.gpg" | sed "s;\.gpg$;;" | sed "s;.*\.password-store\/;;" | dmenu -l 20 -x -p "password_choice:")
     echo "$password_choice" > ~/.password-store/last_choice.txt
 fi
 
 
-if [[ "$category_choice" == "quit" ]]; then
+if [ "$category_choice" = "quit" ]; then
 	echo "program terminated"
 	exit 1
 
-elif [[ "$category_choice" == "last" ]]; then
+elif [ "$category_choice" = "last" ]; then
 	echo "last was selected twice"
 	exit 1
 
-elif [[ "$category_choice" == "edit" ]]; then
-    st -e pass edit $password_choice &
+elif [ "$category_choice" = "edit" ]; then
+    st -e pass edit "$password_choice" &
 
-elif [[ "$category_choice" == "password" ]]; then
-    pass -c $password_choice
+elif [ "$category_choice" = "password" ]; then
+    pass -c "$password_choice"
 
-elif [[ "$category_choice" == "username" ]]; then
-    pass -c2 $password_choice
+elif [ "$category_choice" = "username" ]; then
+    pass -c2 "$password_choice"
     
-elif [[ "$category_choice" == "email" ]]; then
-    pass -c3 $password_choice
+elif [ "$category_choice" = "email" ]; then
+    pass -c3 "$password_choice"
 
-elif [[ "$category_choice" == "website" ]]; then
-    pass -c4 $password_choice
+elif [ "$category_choice" = "website" ]; then
+    pass -c4 "$password_choice"
 
-elif [[ "$category_choice" == "otp" ]]; then
-    pass otp -c $password_choice
+elif [ "$category_choice" = "otp" ]; then
+    pass otp -c "$password_choice"
 fi

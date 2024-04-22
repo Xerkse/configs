@@ -1,5 +1,5 @@
 #!/bin/sh
 
 imagePath=$(tail -n 1 "$HOME/.mylog")
-rm $imagePath && echo "removed $imagePath"
+rm "$imagePath" && echo "removed $imagePath"
 sed -i "$ d" "$HOME/.mylog" && setTheme

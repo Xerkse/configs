@@ -46,9 +46,14 @@ setDwmStatusBar &
 
 #xcompmgr -o1 &
 
-#fix resolution to 1920x1080 and set theme if it succedes 
-#xrandr --output eDP-2 --scale 0.5x0.5 --panning 1920x1080 &
-#xrandr --output eDP-1 --scale 0.5x0.5 --panning 1920x1080 &
+# fix resolution to 1920x1080 and set theme if it succedes 
+
+# I don't think i need this eDP-2 line, it seems to be fixed, but it is here
+# incase seomething goes wrong as it likes to do
+# xrandr --output eDP-2 --scale 0.5x0.5 --panning 1920x1080 &
+#xrandr --output eDP-1 --panning 1920x1080 &
+xrandr --output eDP-1 --mode 1920x1080 &
+
 
 #fix touchpad speed
 xinput set-prop "SynPS/2 Synaptics TouchPad" "Coordinate Transformation Matrix" 1 0 0 0 1 0 0 0 1 &
