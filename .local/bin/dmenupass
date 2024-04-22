@@ -1,20 +1,27 @@
+#!/usr/bin/env bash
 #!/bin/sh
 
+shopt -s nullglob globstar
 
 #get the users choice out of the options
 category_choice=$(printf "password\nusername\nemail\nwebsite\notp\nedit\nlast\nquit" | dmenu -l 10 -x -p "pass options:")
 
 password_choice=""
 
+#cd "$prefix" && find -type f -name "*.gpg" | cut -c 3- | cut -d '.' -f 1
+
 if [ "$category_choice" = "last" ]; then
-    last_choice="$(cat ~/.password-store/last_choice.txt)" 
-    password_choice=$last_choice
+    password_choice="$(cat "$PASSWORD_STORE_DIR/last_choice.txt")" 
     category_choice=$(printf "password\nusername\nemail\nwebsite\notp\nedit\nlast\nquit" | dmenu -l 10 -x -p "pass options:")
 else
-    password_choice=$(tree -f -i ~/.password-store | grep ".*\.gpg" | sed "s;\.gpg$;;" | sed "s;.*\.password-store\/;;" | dmenu -l 20 -x -p "password_choice:")
-    echo "$password_choice" > ~/.password-store/last_choice.txt
+    prefix=${PASSWORD_STORE_DIR-~/.password-store}
+    password_files=( "$prefix"/**/*.gpg )
+    password_files=( "${password_files[@]#"$prefix"/}" )
+    password_files=( "${password_files[@]%.gpg}" )
+    password_choice=$(printf '%s\n' "${password_files[@]}" | dmenu -l 20 -x -p "password_choice: ")
+    [ -n "$password" ] || exit
+    echo "$password_choice" > "$PASSWORD_STORE_DIR/last_choice.txt"
 fi
-
 
 if [ "$category_choice" = "quit" ]; then
 	echo "program terminated"
@@ -41,4 +48,7 @@ elif [ "$category_choice" = "website" ]; then
 
 elif [ "$category_choice" = "otp" ]; then
     pass otp -c "$password_choice"
+else 
+    exit
 fi
+

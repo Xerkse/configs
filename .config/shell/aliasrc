@@ -1,0 +1,16 @@
+#!/bin/sh
+
+alias ls='ls -lah --color=auto'
+alias p="sudo pacman"
+alias v="nvim"
+alias sv="sudo nvim"
+alias lf="lfub"
+alias s="startx"
+alias mkd="mkdir -pv"
+alias grep="grep --color=auto"
+alias ls="ls -lah --color=auto"
+alias lf="lfub"
+
+#for ssh
+alias phone='-p 8022 u0_a315@192.168.1.11'
+
