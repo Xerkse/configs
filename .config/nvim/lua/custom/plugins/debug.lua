@@ -14,6 +14,9 @@ return {
 		-- Creates a beautiful debugger UI
 		"rcarriga/nvim-dap-ui",
 
+		-- dependency for ncim-dap-ui
+		"nvim-neotest/nvim-nio",
+
 		-- Installs the debug adapters for you
 		"williamboman/mason.nvim",
 		"jay-babu/mason-nvim-dap.nvim",
@@ -29,6 +32,7 @@ return {
 			-- Makes a best effort to setup the various debuggers with
 			-- reasonable debug configurations
 			automatic_setup = true,
+			automatic_installation = true,
 
 			-- You can provide additional configuration to the handlers,
 			-- see mason-nvim-dap README for more information
@@ -38,7 +42,7 @@ return {
 			-- online, please don't ask me how to install them :)
 			ensure_installed = {
 				-- Update this to ensure that you have the debuggers for the langs you want
-				"delve",
+				-- "delve",
 				"codelldb",
 				"debugpy",
 			},
@@ -79,11 +83,34 @@ return {
 		-- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
 		vim.keymap.set("n", "<F7>", dapui.toggle, { desc = "Debug: See last session result." })
 
-		dap.listeners.after.event_initialized["dapui_config"] = dapui.open
-		dap.listeners.before.event_terminated["dapui_config"] = dapui.close
-		dap.listeners.before.event_exited["dapui_config"] = dapui.close
+		-- dap.listeners.after.event_initialized["dapui_config"] = dapui.open
+		-- dap.listeners.before.event_terminated["dapui_config"] = dapui.close
+		-- dap.listeners.before.event_exited["dapui_config"] = dapui.close
 
+		dap.listeners.before.attach.dapui_config = function()
+			dapui.open()
+		end
+		dap.listeners.before.launch.dapui_config = function()
+			dapui.open()
+		end
+		dap.listeners.before.event_terminated.dapui_config = function()
+			dapui.close()
+		end
+		dap.listeners.before.event_exited.dapui_config = function()
+			dapui.close()
+		end
 		-- Install golang specific config
-		require("dap-go").setup()
+		-- require("dap-go").setup()
+		dap.configurations.python = {
+		  {
+			type = 'python';
+			request = 'launch';
+			name = "Launch file";
+			program = "${file}";
+			pythonPath = function()
+			  return '/usr/bin/python'
+			end;
+		  },
+		}
 	end,
 }
