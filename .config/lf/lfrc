@@ -20,25 +20,31 @@ set period 1
 set cleaner '~/.config/lf/cleaner'
 set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xl"
 set previewer '~/.config/lf/scope'
+set sortby name
 
 # cmds/functions
 cmd open ${{
     case $(file --mime-type "$(readlink -f $f)" -b) in
 	#application/vnd.openxmlformats-officedocument.spreadsheetml.sheet) localc $fx ;;
 	image/vnd.djvu|application/pdf|application/octet-stream|application/postscript) setsid -f zathura $fx >/dev/null 2>&1 ;;
-        text/*|application/javascript|application/json|inode/x-empty) $EDITOR $f && echo $fx ;;
+        text/*|application/javascript|application/json|inode/x-empty) $EDITOR $fx;;
 	application/vnd.oasis.opendocument.text|application/vnd.openxmlformats-officedocument.wordprocessingml.document) setsid -f libreoffice $fx >/dev/null 2>&1 ;;
-	#image/x-xcf) setsid -f gimp $f >/dev/null 2>&1 ;;
+	image/x-xcf) setsid -f gimp $f >/dev/null 2>&1 ;;
 	#image/svg+xml) display -- $f ;;
-        #image/*) rotdir $f | grep -i "\.\(png\|jpg\|jpeg\|gif\|webp\|tif\|ico\)\(_large\)*$" |
-       	#    nsxiv -aio 2>/dev/null | while read -r file; do
-       	#	[ -z "$file" ] && continue
-       	#	lf -remote "send select \"$file\""
-       	#        lf -remote "send toggle"
-       	#    done &
-        #    ;;
-	image/*) setsid -f sxiv "$fx" ;;
-	video/*) setsid -f mpv --no-terminal --profile=pseudo-gui "$fx" >/dev/null 2>&1 ;;
+	image/*) file_list=$(find "$PWD" -maxdepth 1 -type f | grep -i "\.\(png\|jpg\|jpeg\|gif\|webp\|avif\|tif\|ico\)\(_large\|\.~[[:digit:]]\+~\)*$");
+		index="$(echo "$file_list" | grep -Fxn "$fx" | cut -d ":" -f 1)";
+		#echo "$PWD"
+		#echo "$file_list"
+		#echo "$fx"
+		#echo "$f"
+		echo "$file_list" | setsid -f nsxiv -n "$index" -aio 2>/dev/null | while read -r file; do
+			[ -z "$file" ] && continue
+			lf -remote "send select \"$file\""
+			lf -remote "send toggle"
+		done &
+		;;
+	video/*) echo "$fx" | setsid -f mpv --no-terminal --profile=pseudo-gui --playlist=- >/dev/null 2>&1 ;;
+	#image/*) setsid -f nsxiv "$fx" ;;
 	#audio/*) setsid -f mpv --audio-display=embedded-first --cover-art-file="$(tail -6 ~/.mylog | head -5 | shuf -n 1)" $fx >/dev/null 2>&1 ;;
 	audio/*) setsid -f mpv --profile=pseudo-gui $fx >/dev/null 2>&1 ;;
 	#application/pdf|application/vnd*|application/epub*) setsid -f zathura $fx >/dev/null 2>&1 ;;
@@ -99,26 +105,37 @@ cmd asciiArt ${{
 #cmd setbg "$1"
 #cmd bulkrename $vidir
 
+cmd nsxiv_list ${{
+	echo "$fx" | setsid -f nsxiv -aio 2>/dev/null | while read -r file; do
+		[ -z "$file" ] && continue
+		lf -remote "send select \"$file\""
+		lf -remote "send toggle"
+	done &
+}}
+
 # Bindings
 #map <c-f> $lf -remote "send $id select \"$(fzf)\""
 #map J $lf -remote "send $id cd $(sed -e 's/\s*#.*//' -e '/^$/d' -e 's/^\S*\s*//' ${XDG_CONFIG_HOME:-$HOME/.config}/shell/bm-dirs | fzf)"
+map <enter> shell
 map L $(setsid -f libreoffice $fx)
-map J asciiArt
 map <c-t> $(newTerminal)
 map <c-g> $(gimp $fx)
-#map S $(sxiv -s f $fx)
+#map S ehco "$fx"
+# | nsxiv -ia )
 map gg top
 map D delete
 map <c-n> push :mkdir<space>
 map <c-r> reload
 map <c-s> set hidden!
 map <enter> shell
-#map x $$f
-#map X !$f
+map x $$f
+map X !$f
 #map o &mimeopen $f
 #map O $mimeopen --ask $f
+map E $(echo "$fx")
 
-
+map sn set sortby name
+map sN set sortby natural
 map A rename # at the very end
 map c push A<c-u> # new rename
 map I push A<c-a> # at the very beginning
@@ -130,7 +147,10 @@ map a push A<a-b> # after extension
 #map <c-e> down
 #map <c-y> up
 map V $(st -e $EDITOR $fx &)
-map S $(setsid -f sent $fx &)
+map <c-S> $(setsid -f sent $fx &)
+
+map S nsxiv_list
+
 map <c-v> $(setsid -f vlc $fx &)
 
 #map W $setsid -f $TERMINAL >/dev/null 2>&1

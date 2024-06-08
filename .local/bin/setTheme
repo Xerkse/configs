@@ -1,5 +1,6 @@
 #!/bin/sh
-imagePath="$(find ~/Pictures/wallpapers -type f | shuf -n 1)"
-echo "$imagePath" >> ~/.mylog &
-feh --bg-fill $imagePath && echo "set image to $imagePath" 
-#feh --bg-scale $imagePath && echo "set image to $imagePath" 
+# Location of link to wallpaper link.
+bgloc="${XDG_DATA_HOME:-$HOME/.local/share}/bg"
+feh --bg-scale "$bgloc" #&& echo "set image to $imagePath" 
+
+imagePath="$(find ~/Pictures/wallpapers -type f | shuf -n 1)" && ln -sf "$imagePath" "$bgloc" && echo "$imagePath" >> ~/.mylog &

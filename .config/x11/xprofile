@@ -3,15 +3,30 @@
 # This file runs when a DM logs you into a graphical session.
 # If you use startx/xinit like a Chad, this file will also be sourced.
 
+
 xrandr --dpi 96		# Set DPI. User may want to use a larger number for larger screens.
-setTheme &			# set the background with the `setbg` script
-#xrdb ${XDG_CONFIG_HOME:-$HOME/.config}/x11/xresources & xrdbpid=$!	# Uncomment to use Xresources colors/settings on startup
+# fix resolution to 1920x1080 and set theme if it succedes 
+
+# I don't think i need this eDP-2 line, it seems to be fixed, but it is here
+# incase seomething goes wrong as it likes to do
+# xrandr --output eDP-2 --scale 0.5x0.5 --panning 1920x1080 &
+xrandr --output eDP-1 --mode 1920x1080 --output eDP-2 --mode 1920x1080 &
+
+#fix touchpad speed
+
+xrdb ${XDG_CONFIG_HOME:-$HOME/.config}/x11/xresources & xrdbpid=$!	# Uncomment to use Xresources colors/settings on startup
 
 #autostart="mpd xcompmgr dunst unclutter pipewire remapd"
 
 #for program in $autostart; do
 #	pidof -sx "$program" || "$program" &
 #done >/dev/null 2>&1
+
+autostart="xcompmgr dunst setDwmStatusBar inputmaps"
+
+for program in $autostart; do
+	pidof -sx "$program" || "$program" &
+done >/dev/null 2>&1
 
 # Ensure that xrdb has finished running before moving on to start the WM/DE.
 [ -n "$xrdbpid" ] && wait "$xrdbpid"
