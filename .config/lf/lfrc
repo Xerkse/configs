@@ -132,7 +132,8 @@ map x $$f
 map X !$f
 #map o &mimeopen $f
 #map O $mimeopen --ask $f
-map E $(echo "$fx")
+#map E $(echo "$fx")
+map E $(exiftool "$fx" | fzf)
 
 map sn set sortby name
 map sN set sortby natural

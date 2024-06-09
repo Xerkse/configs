@@ -7,6 +7,7 @@ do
 	#"j") jp2a "$file" ;;
 	"i") convert -negate "$file" "$file" ;;
 	"G") gimp "$file" ;;
+	"e") exiftool "$file" | fzf  ;;
 	"y")
 		printf "%s" "$file" | tr -d '\n' | xclip -selection clipboard &&
 		notify-send "$file copied to clipboard" & ;;
