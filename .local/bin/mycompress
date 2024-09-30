@@ -4,4 +4,7 @@ base=$(basename "$1")
 ext="$(base##*.)"
 base="$(base%.*)"
 
-ffmpeg -i "$1" -c:v h264 -c:a aac "$base"_compressed."$ext"
+ffmpeg -i "$1" -pix_fmt yuv420p -c:v h264 -c:a aac "$base"_compressed."$ext"
+
+#pix_fmt fixes pixel format to work with browsers
+#ffmpeg -i screencast-240821-0923-10.mp4 -pix_fmt yuv420p -c:v h264 -c:a aac FINAL.mp4

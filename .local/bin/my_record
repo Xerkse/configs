@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #pavucontrol or pulsemixer for seding default audio device
 # better functoin for when I let the monitor be 4k
@@ -38,7 +38,7 @@ webcam() {
 
 audio () {
     ffmpeg \
-        -f pulse -i default \
+        -f alsa -i default \
         -c:a flac \
         "$HOME/audio-$(date +"%y%m%d-%H%M-%S").flac" & \
         echo $! > /tmp/recordingpid

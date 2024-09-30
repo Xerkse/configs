@@ -1,7 +1,21 @@
 #!/bin/sh
 
-sudo mount -t cifs //192.168.1.10/xerkse_dataset /mnt -o credentials=~/.smbcred
+sudo mount -t cifs //192.168.1.10/xerkse_dataset /mnt -o credentials=$HOME/.smbcred
 
 #COMMANDS
 
 #rsync -aAXv /home/xerkse/Documents /home/xerkse/.password-store /mnt/bakups/
+
+# copy documents from PC to Server
+# sudo rsync -aAXv --exclude backups ./* /media/bakups/Documents/
+
+#only add new things and do not mess with things already there.
+#sudo rsync -aAXv --ignore-existing ./backups /media/bakups/Documents/
+
+# sudo rsync -aAXv --delete-delay /media/bakups/Documents/backups ./ | grep "deleting"
+
+
+# command to sunc and delete deleted ones
+# sudo rsync -aAXv --delete --ignore-existing --info=DEL $HOME/Documents/backups /mnt/bakups/Documents/
+
+# sudo rsync -aAX --delete --ignore-existing --info=DEL /media/bakups/Documents/backups ./

@@ -74,6 +74,16 @@ cmd delete ${{
 	[ $ans = "y" ] && mv $fx ~/.trash/
 }}
 
+cmd sudodelete ${{
+	#clear; tput cup $(($(tput lines)/3)); tput bold
+	set -f
+	printf "%s\n\t" "$fx"
+	printf "SUDOdelete?[y/N]"
+	read ans
+	#[ $ans = "y" ] && rm -rf -- $fx
+	[ $ans = "y" ] && sudo -A mv $fx ~/.trash/
+}}
+
 cmd asciiArt ${{
 	set -f
 	printf ""
@@ -123,7 +133,8 @@ map <c-g> $(gimp $fx)
 #map S ehco "$fx"
 # | nsxiv -ia )
 map gg top
-map D delete
+map DD delete
+map D<c-d> sudodelete
 map <c-n> push :mkdir<space>
 map <c-r> reload
 map <c-s> set hidden!

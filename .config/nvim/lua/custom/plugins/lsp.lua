@@ -149,6 +149,7 @@ return {
 				texlab = {},
 				bashls = {},
 				pyright = {},
+				csharp_ls = {},
 
 				lua_ls = {
 					-- cmd = {...},

@@ -1,5 +1,6 @@
 return {
-	{ --color plugins
+	{ 
+		--color plugins
 		"norcalli/nvim-colorizer.lua",
 		opts = {
 			"*",

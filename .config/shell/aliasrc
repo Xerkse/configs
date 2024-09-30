@@ -10,7 +10,8 @@ alias mkd="mkdir -pv"
 alias grep="grep --color=auto"
 alias ls="ls -lah --color=auto"
 alias lf="lfub"
+alias mkcd="source mkcd"
 
 #for ssh
-alias phone='-p 8022 u0_a315@192.168.1.11'
+alias phone="-p 8022 u0_a315@192.168.1.11"
 

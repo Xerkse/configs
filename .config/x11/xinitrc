@@ -17,6 +17,8 @@ fi
 dbus-update-activation-environment --all
 #dbus-launch dwm
 while true; do
+echo "test"
+echo "test"
 	#fix escape
 	inputmaps &
         #setxkbmap -option caps:swapescape &
