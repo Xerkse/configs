@@ -65,10 +65,21 @@ video() {
         -framerate 30 \
         -s "$(getdim)" \
         -i "$DISPLAY" \
-        -c:v libx264 -qp 0 -r 30 \
-        "$HOME/video-$(date '+%y%m%d-%H%M-%S').mkv" & \
+        -c:v h264 -crf 0 -r 30 \
+        -use_wallclock_as_timestamps 1 \
+        "$HOME/video-$(date '+%y%m%d-%H%M-%S').mp4" & \
         echo $! > /tmp/recordingpid
 }
+# video() {
+#     ffmpeg \
+#         -f x11grab \
+#         -framerate 30 \
+#         -s "$(getdim)" \
+#         -i "$DISPLAY" \
+#         -c:v libx264 -qp 0 -r 30 \
+#         "$HOME/video-$(date '+%y%m%d-%H%M-%S').mkv" & \
+#         echo $! > /tmp/recordingpid
+# }
 
 askrecording() {
     choice=$(printf "screencast(AV)\\nvideo(V)\\nselected video(V)\\naudio(A)\\nwebcam" | dmenu -i -p "Select recordig style: ")

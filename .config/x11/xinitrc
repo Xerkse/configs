@@ -17,12 +17,10 @@ fi
 dbus-update-activation-environment --all
 #dbus-launch dwm
 while true; do
-echo "test"
-echo "test"
 	#fix escape
 	inputmaps &
         #setxkbmap -option caps:swapescape &
 	#start dwm
 	#sleep 3 && setTheme &
-	setTheme && dwm 2> ~/.dwm.log
+	setbg && dwm 2> ~/.dwm.log
 done

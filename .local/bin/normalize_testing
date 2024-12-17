@@ -16,3 +16,16 @@ parallel -j 10 < ../tempfile.txt
 wait
 
 echo "All Done (:"
+
+#FLAC
+#find -type f -name "*.flac"
+#cat flacs.txt | parallel -j4 ffmpeg -y -i "{}" -compression_level 12 -filter:a loudnorm "../main_normalized/{}"
+
+# ONLY FOR WEIRD ONES
+#cat m4aPlusMp3s_updated.txt | parallel ffmpeg -y -i "{}" -filter:a loudnorm -vcodec mjpeg "../main_normalized/{}"
+
+# NORMAL
+#cat m4aPlusMp3s.txt | parallel ffmpeg -y -i "{}" -filter:a loudnorm "../main_normalized/{}"
+
+# for creating file structure
+# cat m4aPlusMp3s.txt | parallel -j4 mkdir -p "../main_normalized/{//}"
