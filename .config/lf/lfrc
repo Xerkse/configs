@@ -71,7 +71,9 @@ cmd delete ${{
 	printf "delete?[y/N]"
 	read ans
 	#[ $ans = "y" ] && rm -rf -- $fx
-	[ $ans = "y" ] && mv $fx ~/.trash/
+	foldername="$(date +%Y-%m-%d_%H:%M:%S_%N)"
+	mkdir "$HOME/.trash/$foldername"
+	[ $ans = "y" ] && mv $fx "$HOME/.trash/$foldername/"
 }}
 
 cmd sudodelete ${{
@@ -81,7 +83,10 @@ cmd sudodelete ${{
 	printf "SUDOdelete?[y/N]"
 	read ans
 	#[ $ans = "y" ] && rm -rf -- $fx
-	[ $ans = "y" ] && sudo -A mv $fx ~/.trash/
+	foldername="$(date +%Y-%m-%d_%H:%M:%S_%N)"
+	mkdir "$HOME/.trash/$foldername"
+	[ $ans = "y" ] && sudo -A mv "$fx" "$HOME/.trash/$foldername/"
+	#[ $ans = "y" ] && sudo -A mv $fx ~/.trash/
 }}
 
 cmd asciiArt ${{

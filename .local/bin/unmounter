@@ -12,11 +12,11 @@ mounteddrives="$(echo "$lsblkoutput" | awk '($2=="part"||$2="crypt")&&$4!~/\/boo
 
 allunmountable="$(echo "$mounteddroids
 $mounteddrives" | sed "/^$/d;s/ *$//")"
-test -n "$allunmountable"
+[ -z "$allunmountable" ] && notify-send "Nothing to unmount" && exit
 
 chosen="$(echo "$allunmountable" | dmenu -i -p "Unmount which drive?")"
 chosen="${chosen%% *}"
-test -n "$chosen"
+[ -z "$chosen" ] && notify-send "Nothing was selected to unmount" && exit
 
 sudo -A umount -l "/${chosen#*/}"
 notify-send "Device unmounted." "$chosen has been unmounted."
