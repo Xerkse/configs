@@ -1,5 +1,5 @@
 #add to path
-export PATH="$(find ~/.local/bin -type d | paste -sd ':' -):$HOME/:/otp:$HOME/.cargo/env:$PATH"
+export PATH="$(find ~/.local/bin -type d | paste -sd ':' -):$HOME/:/otp:$HOME/.cargo/env:$PATH:/var/lib/snapd/snap/bin/"
 
 export EDITOR="nvim"
 export TERMINAL="st"
