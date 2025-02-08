@@ -1,0 +1,12 @@
+#!/bin/sh
+# Location of link to wallpaper link.
+bgloc="${XDG_DATA_HOME:-$HOME/.local/share}/bg"
+oldimgpath="$(readlink -f "$bgloc")"
+
+feh --bg-scale "$bgloc"
+
+echo "$oldimgpath" >> "$HOME/.mylog" &
+notify-send "wallpaper changed to $oldimgpath" &
+#feh --bg-scale "$bgloc" #&& echo "set image to $imagePath" > ~/.mylog
+
+imagePath="$(find "$HOME/Pictures/wallpapers" -type f | shuf -n 1)" && ln -sf "$imagePath" "$bgloc" & # && echo "$imagePath" >> ~/.mylog &

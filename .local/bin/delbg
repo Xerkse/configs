@@ -1,0 +1,5 @@
+#!/bin/sh
+
+imgpath="$(tail -1 "$HOME/.mylog")"
+mv "$imgpath" "$HOME/.trash/" && notify-send "moved image to trash $imgpath" &
+setbg &
