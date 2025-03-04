@@ -6,10 +6,10 @@
 set -e
 
 mounteddroids="$(grep simple-mtpfs /etc/mtab | awk '{print "📱" $2}')"
-mountedcifs="$(grep cifs /etc/mtab | awk '{print "📂" $2}')"
+mountedcifs="$(grep cifs /etc/mtab | awk '{print "🌐" $2}')"
 lsblkoutput="$(lsblk -nrpo "name,type,size,mountpoint")"
 #mounteddrives="$(echo "$lsblkoutput" | awk '($2=="part"||$2="crypt")&&$4!~/\/boot|\/home$|SWAP/&&length($4)>1{printf "💾%s (%s)\n",$4,$3}')"
-mounteddrives="$(echo "$lsblkoutput" | awk '($2=="part"||$2=="crypt"||$2=="disk")&&$4!~/\/boot|\/var\/log|\/home$|SWAP/&&length($4)>1{printf "💾%s (%s)\n",$4,$3}')"
+mounteddrives="$(echo "$lsblkoutput" | awk '($2=="part"||$2=="crypt"||$2=="disk")&&$4!~/\/boot|\/var\/log|\/var\/cache\/pacman\/pkg|\/home$|SWAP/&&length($4)>1{printf "💾%s (%s)\n",$4,$3}')"
 
 allunmountable="$(echo "$mounteddroids
 $mountedcifs
