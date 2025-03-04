@@ -14,6 +14,7 @@ escape(){ echo "$@" | iconv -cf UTF-8 -t ASCII//TRANSLIT | tr -d '[:punct:]' | t
 # Check for phones.
 phones="$(simple-mtpfs -l 2>/dev/null | sed "s/^/📱/")"
 mountedphones="$(grep "simple-mtpfs" /etc/mtab)"
+
 # If there are already mounted phones, remove them from the list of mountables.
 [ -n "$mountedphones" ] && phones="$(for phone in $phones; do
 	for mounted in $mountedphones; do

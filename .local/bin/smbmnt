@@ -1,6 +1,12 @@
 #!/bin/sh
 
-sudo mount -t cifs //192.168.1.10/xerkse_dataset /mnt -o credentials=$HOME/.smbcred
+sudo mount -t cifs //192.168.1.10/xerkse_dataset /mnt -o "credentials=$HOME/.smbcred,uid=$(id -u),gid=$(id -g)"
+
+# used in case i need to set permissions so everything can be edited
+#,file_mode=0660,dir_mode=0770
+
+#sudo mount -t cifs //192.168.1.10/xerkse_dataset /mnt -o credentials=$HOME/.smbcred
+#sudo mount -t cifs //192.168.1.10/xerkse_dataset /mnt -o credentials=$HOME/.smbcred
 
 #COMMANDS
 
