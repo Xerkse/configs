@@ -6,7 +6,7 @@
 
 
 #get the users choice out of the options
-choice="$(printf "\nshutdown\nreboot\nout\nlock\nblack\nquit" | dmenu -l 10 -p "power options:")"
+choice="$(printf "\nshutdown\nreboot\nout\nlock\nsuspend\nblack\nquit" | dmenu -l 10 -p "power options:")"
 
 #stop
 if [ "$choice" = "quit" ]; then
@@ -28,6 +28,13 @@ elif [ "$choice" = "out" ]; then
 #lockscreen
 elif [ "$choice" = "lock" ]; then
         setsid -f slock && systemctl suspend
-elif [ "$choice" = "black" ]; then
+
+#suspend
+elif [ "$choice" = "suspend" ]; then
         systemctl suspend &
+
+#black, display sleep
+elif [ "$choice" = "black" ]; then
+	sleep 1
+	xset dpms force off
 fi
