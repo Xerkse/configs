@@ -7,8 +7,6 @@ shopt -s nullglob globstar
 #get the users choice out of the options
 category_choice=$(printf "password\nusername\nemail\nwebsite\notp\nedit\nlast\nquit" | dmenu -l 10 -x -p "pass options:") || exit
 
-echo "$category_choice"
-
 password_choice=""
 
 #cd "$prefix" && find -type f -name "*.gpg" | cut -c 3- | cut -d '.' -f 1
@@ -21,8 +19,9 @@ else
     password_files=( "$prefix"/**/*.gpg )
     password_files=( "${password_files[@]#"$prefix"/}" )
     password_files=( "${password_files[@]%.gpg}" )
-    password_choice=$(printf '%s\n' "${password_files[@]}" | dmenu -l 20 -x -p "password_choice: ")
-    [ -n "$password" ] || exit
+    password_choice=$(printf '%s\n' "${password_files[@]}" | dmenu -l 20 -x -p "password_choice: ") || exit
+    # was here
+    # [ -n "$password" ] || exit
     echo "$password_choice" > "$PASSWORD_STORE_DIR/last_choice.txt"
 fi
 
@@ -35,6 +34,7 @@ elif [ "$category_choice" = "last" ]; then
 	exit 1
 
 elif [ "$category_choice" = "edit" ]; then
+    echo "$category_choice"
     st -e pass edit "$password_choice" &
 
 elif [ "$category_choice" = "password" ]; then
@@ -51,6 +51,7 @@ elif [ "$category_choice" = "website" ]; then
 
 elif [ "$category_choice" = "otp" ]; then
     pass otp -c "$password_choice"
+
 else 
     exit
 fi
