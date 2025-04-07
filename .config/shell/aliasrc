@@ -9,7 +9,6 @@ alias s="startx"
 alias mkd="mkdir -pv"
 alias grep="grep --color=auto"
 alias ls="ls -lah --color=auto"
-alias lf="lfub"
 alias mkcd="source mkcd"
 
 #for ssh
