@@ -1,19 +1,30 @@
 #!/bin/sh
+# if provided with no options, this program will ask the user for the tupe of
+# screenshot. If options are provided then it will surpress copying to clipboard
+# and sending a notification
 
-#maim ~/Pictures/\"Screen Shots\"/\"Screenshot_%Y-%m-%d-%T.png\" -d 2
-#
-choice=$(printf "all monitors\\nselection\\nquit" | dmenu -l 10 -p "screenshot options:")
-fileName="$(date +%Y%m%d%H%M%S).jpg"
+if [ -z "$1" ]; then
+	choice="$(printf "all monitors\\nselection\\nquit" | dmenu -l 10 -p "screenshot options:")"
+else
+	case $1 in
+		-a) choice="all monitors";;
+		-s) choice="selection";;
+		*) echo "unknown usage, please use -a for all monitors and -s for selection" && exit 1;;
+	esac
+	clipboard="do not use clipboard"
+fi
+
+filePath="$HOME/Pictures/Screenshots/$(date +%Y%m%d%H%M%S).jpg"
 
 clip_file () {
-	echo "$HOME/Pictures/Screenshots/$fileName" | xclip -selection clipboard
+	if [ -z "$clipboard" ]; then
+		printf "%s" "$filePath" | xclip -selection clipboard && notify-send "$filePath copied to clipboard"
+	fi
+	echo "$filePath"
 }
 
-
 case $choice in
-        all\ monitors) maim $HOME/Pictures/Screenshots/$fileName -uoD -d 1 && clip_file;;
-	selection) maim "$HOME/Pictures/Screenshots/$fileName" -usoD && clip_file;;
+        all\ monitors) maim "$filePath" -uoD -d 1 && clip_file;;
+	selection) maim "$filePath" -usoD && clip_file;;
 	*) echo "program terminated" && exit 1;;
 esac
-
-

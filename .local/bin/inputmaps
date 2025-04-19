@@ -10,6 +10,9 @@ xinput set-prop "TPPS/2 Elan TrackPoint" "libinput Scrolling Pixel Distance" 25 
 
 xinput set-prop "Kensington Eagle Trackball" "libinput Accel Speed" -0.5 &
 
+xinput set-prop "Kensington Expert Mouse" "libinput Accel Speed" -1 &
+xinput set-prop "Kensington Expert Mouse" "libinput Scroll Method Enabled" 0 0 1 &
+xinput set-prop "Kensington Expert Mouse" "libinput Button Scrolling Button" 3 &
 
 # This script is called on startup to remap keys.
 # Decrease key repeat delay to 300ms and increase key repeat rate to 50 per second.

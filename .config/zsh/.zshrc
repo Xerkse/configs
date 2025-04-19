@@ -100,3 +100,5 @@ function zsh_add_plugin() {
 #Plugins
 zsh_add_plugin "zsh-users/zsh-autosuggestions"
 zsh_add_plugin "zdharma-continuum/fast-syntax-highlighting"
+
+eval "$(zoxide init zsh)"

@@ -1,3 +1,4 @@
 #!/bin/sh
 
+screenshotOptions
 espeak -v en-us "$(xclip -o)"
