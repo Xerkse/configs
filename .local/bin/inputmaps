@@ -8,8 +8,10 @@ xinput set-prop "TPPS/2 Elan TrackPoint" "libinput Accel Speed" -0.5 &
 xinput set-prop "TPPS/2 Elan TrackPoint" "Coordinate Transformation Matrix" 1 0 0 0 1 0 0 0 1 &
 xinput set-prop "TPPS/2 Elan TrackPoint" "libinput Scrolling Pixel Distance" 25 &
 
-xinput set-prop "Kensington Eagle Trackball" "libinput Accel Speed" -0.5 &
+# xinput set-prop "Kensington Eagle Trackball" "libinput Accel Speed" -0.5 &
 
+#Kensington Expert
+xinput set-prop "Kensington Expert Mouse" "libinput Accel Profile Enabled" 1 0 0 &
 xinput set-prop "Kensington Expert Mouse" "libinput Accel Speed" -1 &
 xinput set-prop "Kensington Expert Mouse" "libinput Scroll Method Enabled" 0 0 1 &
 xinput set-prop "Kensington Expert Mouse" "libinput Button Scrolling Button" 3 &

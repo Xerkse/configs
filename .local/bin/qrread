@@ -1,9 +1,12 @@
 #!/bin/sh
 
-filePath="$(screenshotOptions -s)" || exit
+filePath="$(screenshotOptions -s)" || exit 1
 
-zbaroutput="$(zbarimg -q "$filePath")" || { notify-send "no QR code result"; exit 1; }
-result="$(echo "$zbaroutput" | sed "1s/^QR-Code://")"
-echo "$result"
-echo "$result" | xclip -selection clipboard || notify-send "failed to copy QR data to clipboard"
-notify-send "$result"
+# zbaroutput="$(zbarimg -q "$filePath")" || { notify-send "no QR code result"; exit 1; }
+# result="$(echo "$zbaroutput" | sed "1s/^QR-Code://")"
+# echo "$result"
+# echo "$result" | xclip -selection clipboard || notify-send "failed to copy QR data to clipboard"
+#notify-send "hi this is a test" &
+
+zbaroutput="$(zbarimg -q "$filePath")" || { printf "no QR code result" >&2; exit 1; }
+echo "$zbaroutput" | sed "1s/^QR-Code://"

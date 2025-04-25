@@ -1,0 +1,46 @@
+#!/bin/sh
+# script to make copying things to clipboard easier for scripts and things
+
+show_help=
+file=
+
+while getopts "hf" opt; do
+  case "$opt" in
+	h) show_help=1 ;;
+	f) file=1 ;;
+    \?) echo "Invalid option"; exit 1 ;;
+  esac
+done
+
+shift $((OPTIND - 1))
+
+[ -n "$show_help" ] && {
+	printf "%s\n" \
+	"Usage: $0 input" \
+	"Usage: $0 < /dev/stdout" \
+	"" \
+	"	-h	help menu" \
+	"	-f  clip input from a file" \
+	"	--	There are currently no other options" \
+	""
+	exit 1
+}
+
+if [ -n "$file" ]; then
+	# file set, so cat in_file
+	[ -n "$1" ] || { echo "file option specified, but nothing provided" >&2; exit 1; }
+	[ -f "$1" ] || { echo "file option specified, but file provided was not file" >&2; exit 1; }
+	xclip -sel clip -loops 0 < "$1" &
+	sleep 0.5
+elif [ -n "$1" ]; then
+	# text input, so set it
+	printf "%s" "$1" | xclip -sel clip -loops 0 &
+elif [ ! -t 0 ]; then
+	# no file or text input
+	cat | xclip -sel clip -loops 0 &
+	sleep 0.5
+else
+	echo "No Text input, file, or standard input" >&2
+	exit 1
+fi
+

@@ -1,0 +1,67 @@
+#!/bin/sh
+# script to work with qr code data. It can take standard input, file, or text
+
+clip=
+show_help=
+file=
+view=
+
+while getopts "chfv" opt; do
+  case "$opt" in
+    c) clip=1 ;;
+	h) show_help=1 ;;
+	f) file=1 ;;
+	v) view=1 ;;
+    \?) echo "Invalid option"; exit 1 ;;
+  esac
+done
+
+shift $((OPTIND - 1))
+
+[ -n "$show_help" ] && {
+	printf "%s\n" \
+	"Usage: $0 [options] input" \
+	"Usage: $0 [options] < /dev/stdout" \
+	"" \
+	"	-h	help menu" \
+	"	-c	copy stdin to clipboard" \
+	"	-f	specify an input file"  \
+	"	-v	view the image after it is created" \
+	""
+	exit 1
+}
+
+if [ -n "$file" ]; then
+	# file set, so cat in_file
+	[ -n "$1" ] || { echo "file option specified, but nothing provided" >&2; exit 1; }
+	[ -f "$1" ] || { echo "file option specified, but file provided was not file" >&2; exit 1; }
+	in_data="$(cat "$1")"
+elif [ -n "$1" ]; then
+	# text input, so set it
+	in_data="$1"
+elif [ ! -t 0 ]; then
+	# stdin is not the terminal
+	in_data="$(cat)"
+else
+	echo "No Text input, file, or standard input" >&2
+	exit 1
+fi
+
+FILEPATH="$HOME/Pictures/QR/$(date +%Y%m%d%H%M%S).jpg"
+
+qrencode -s 8 -o "$FILEPATH" "$in_data" || exit 1
+printf "%s" "QR-Code File Path: $FILEPATH"
+printf "\n" >&2
+
+# if clip is set then copy the data to the clipbard
+[ -n "$clip" ] && {
+	clip "$in_data" && echo "QR-Code Data copied to clipboard." >&2
+}
+
+# qrencode -s 8 -o "$FILEPATH" "$data" || exit 1
+
+# if view option is set then open the image in image viewer
+
+[ -n "$view" ] && {
+	nsxiv -s f "$FILEPATH"
+}

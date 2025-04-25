@@ -1,0 +1,417 @@
+#!/bin/sh
+
+dmenuScript () {
+	dmenu -l -1 -p "$1" < /dev/stdin
+	# dmenu -p "$1" < /dev/stdin
+}
+
+qrencodeData () {
+	data="$1"
+	# echo "$data" | xclip -selection clipboard || exit 1
+	# printf "%s\n" "QR-Code Data copied to clipboard:" "$data" >&2
+
+	
+	# printf "%s" "$data" | qrencode -s 8 -o "$FILEPATH" || exit 1
+
+	qrimg -vc "$data" >&2
+
+	printf "%s" "$data"
+	printf "\n" >&2
+
+	# qrencode -s 8 -o "$FILEPATH" "$data" || exit 1
+}
+
+# inputData () {
+# 	tmpfile="$(mktemp)"
+# 	if [ -n "$1" ]; then
+# 		echo "$1" > "$tmpfile"
+# 	fi
+#
+# 	message="$2"
+# 	"$TERMINAL" -e sh -c '
+# 		if [ -n "$1" ]; then
+# 			read -n 1 -s -r -p "$1" >&2
+# 		fi
+# 		exec '"$EDITOR"' "$2"
+# 	' sh "$message" "$tmpfile"
+#
+# 	# messageCommand=""
+# 	# if [ -n "$2" ]; then
+# 	# 	message="$2"
+# 	# 	messageCommand="read -n 1 -s -r -p '$message' >&2"
+# 	# fi
+# 	# "$TERMINAL" -e sh -c "$messageCommand $EDITOR '$tmpfile'"
+#
+# 	cat "$tmpfile"
+# 	rm -f "$tmpfile"
+# }
+
+userInput () {
+	# a function that can not be called from a subshell
+	# it takes as input the text which is inputed into the edited document
+	# This program edtis TMPFILE and this must be retrieved after it is run
+	if [ -n "$1" ]; then
+		printf "%s" "$1" > "$TMPFILE"
+	else
+		printf "" > "$TMPFILE"
+	fi
+	"$EDITOR" "$TMPFILE"
+}
+
+general () {
+	userInput ""
+	qrencodeData "$(cat "$TMPFILE")"
+	#qrencodeData "$(inputData)"
+}
+
+clipboard () {
+	choice="$(printf "edit\ndone" | dmenuScript "Would you like to edit the input:")" || exit 1
+	case "$choice" in
+		"done") qrencodeData "$XCLIPBOARD" ;;
+		"edit") userInput "$XCLIPBOARD"; qrencodeData "$(cat "$TMPFILE")" ;;
+		*) exit 1;;
+	esac
+}
+
+url () {
+	clipChoice="$(printf "clipboard(https://www.example.com)\ntemplate\nexample" | dmenuScript "Select URL Option:")" || exit 1
+	case "$clipChoice" in
+		"clipboard"*) clipboard ;;
+		# "template") qrencodeData "$(inputData 'PROTOCOL://DOMAIN.TOPDOMAIN')" ;;
+		# "example") qrencodeData "$(inputData 'https://lukesmith.xyz')" ;;
+		"template") userInput 'PROTOCOL://DOMAIN.TOPDOMAIN'; qrencodeData "$(cat "$TMPFILE")" ;;
+		"example") userInput 'https://lukesmith.xyz'; qrencodeData "$(cat "$TMPFILE")" ;;
+		*) exit 1;;
+	esac
+}
+
+email () {
+	clipChoice="$(printf "clipboard(example@gmail.com)\ntemplate\nexample\noptions" | dmenuScript "Select Email Option:")" || exit 1
+	case "$clipChoice" in
+		"clipboard"*) email="mailto:$XCLIPBOARD" ;;
+		"template") userInput 'mailto:EMAIL?ubject=SUBJECT&body=BODY'; email="$(cat "$TMPFILE")" ;;
+		"example") userInput 'mailto:someone@yoursite.com?subject=Big News&body=Body goes here.'; email="$(cat "$TMPFILE")" ;;
+		"options") {
+			printf 'Enter the email of the person you are mailing to:' >&2
+			read -r toemail
+			[ -z "$toemail" ] && exit 1
+			# tocc is simply not working, so this is unnecesary
+			# tocc=""
+			# while true; do
+			# 	newcc="$(printf '' | dmenuScript "Enter the email of the person you are mailing to:")"
+			# 	[ -z "$newcc" ] && break
+			# 	if [ -n "$tocc" ]; then
+			# 		tocc="$tocc,$newcc"
+			# 	else
+			# 		tocc="$newcc"
+			# 	fi
+			# done
+			printf "Enter the subject of the email" >&2
+			read -r subject
+
+			printf "Press ENTER, then input the body of the email, then save and exit..." >&2
+			read -r  _
+
+			userInput ""
+			body="$(cat "$TMPFILE")"
+			#body="$(inputData '' "Press ENTER, then input the body of the email, then save and exit...")" || exit 1
+			email="mailto:$toemail?subject=$subject&body=$body"
+		};;
+		*) exit 1;;
+	esac
+	qrencodeData "$email"
+}
+
+phone () {
+	clipChoice="$(printf "clipboard(phonenumber 1+777-777-7777 or 777-777-7777 or 7777777777)\ntemplate\nexample" | dmenuScript "Select Phone Option:")" || exit 1
+	case "$clipChoice" in
+		"clipboard"*) phone="tel:$XCLIPBOARD" ;;
+		"template") userInput 'tel:PHONENUMBER'; phone="$(cat "$TMPFILE")" ;;
+		"example") userInput 'tel:1+777-777-7777'; phone="$(cat "$TMPFILE")" ;;
+		*) exit 1;;
+	esac
+	qrencodeData "$phone"
+}
+
+sms () {
+	clipChoice="$(printf "clipboard(phonenumber 7+777-777-7777 or 777-777-7777 or 7777777777)\ntemplate\nexample" | dmenuScript "Select SMS Option:")" || exit 1
+	case "$clipChoice" in
+		"clipboard"*) sms="sms:$XCLIPBOARD" ;;
+		"template") userInput 'sms:PHONENUMBER:MESSAGE'; sms="$(cat "$TMPFILE")" ;;
+		"example") userInput 'sms:1+777-777-7777:Hello, this is Ya bo, brotato, coming back at you with another BANGER!!!'; sms="$(cat "$TMPFILE")" ;;
+		*) exit 1;;
+	esac
+	qrencodeData "$sms"
+}
+
+geo () {
+	clipChoice="$(printf "clipboard(cordinates N,W or N,W,Elevation)\ntemplate\nexample" | dmenuScript "Select Geo Option:")" || exit 1
+	case "$clipChoice" in
+		"clipboard"*) geo="geo:$XCLIPBOARD" ;;
+		"template") userInput 'geo:NLATITUDE,WLONGITUDE,ELEVATION'; geo="$(cat "$TMPFILE")" ;;
+		"example") userInput 'geo:40.71872,-73.98905,100'; geo="$(cat "$TMPFILE")" ;;
+		*) exit 1;;
+	esac
+	qrencodeData "$geo"
+}
+
+calendar () {
+	clipChoice="$(printf "clipboard(summary of event)\ntemplate\nexample\noptions" | dmenuScript "Select Geo Option:")" || exit 1
+
+	case "$clipChoice" in
+		"clipboard"*) {
+			yyyymmdd="$(date +%Y%m%d)"
+			hhmmss="$(date +%H%M%S)"
+			calendar="$(printf "%s\n" \
+			"BEGIN:VEVENT" \
+			"SUMMARY:$XCLIPBOARD" \
+			"DTSTART:${yyyymmdd}T${hhmmss}Z" \
+			"DTEND:${yyyymmdd}T${hhmmss}Z" \
+			"END:VEVENT" \
+			)"
+		} ;;
+		"template") {
+			userInput "$(printf "%s\n" \
+			"BEGIN:VEVENT" \
+			"SUMMARY:EXAMPLESUMMARY" \
+			"DTSTART:YYYYMMDDTHHMMSSZ" \
+			"DTEND:YYYYMMDDTHHMMSSZ" \
+			"END:VEVENT" \
+			)"
+			calendar="$(cat "$TMPFILE")"
+		};;
+		"example") {
+			yyyymmdd="$(date +%Y%m%d)"
+			hhmmss="$(date +%H%M%S)"
+
+			userInput "$(printf "%s\n" \
+			"BEGIN:VEVENT" \
+			"SUMMARY:Summer+Vacation!" \
+			"DTSTART:${yyyymmdd}T${hhmmss}Z" \
+			"DTEND:${yyyymmdd}T${hhmmss}Z" \
+			"END:VEVENT" \
+			)"
+			calendar="$(cat "$TMPFILE")" 
+		} ;;
+		"options") {
+			getdate() {
+				set -- $(date '+%Y %m %d')
+				curyear=$1
+				curmonth=$2
+				curday=$3
+
+				printf "Enter 4 digit year(YYYY), ENTER for (%s):" "$curyear" >&2
+				read -r year
+				[ -z "$year" ] && year="$curyear"
+
+				printf "Enter 2 digit month(mm), ENTER for (%s):" "$curmonth" >&2
+				read -r month
+				[ -z "$month" ] && month="$curmonth"
+
+				printf "Enter 2 digit day(dd), ENTER for (%s):" "$curday" >&2
+				read -r day
+				[ -z "$day" ] && day="$curday"
+
+				printf "Enter 2 digit military hour(HH), ENTER for (00):" >&2
+				read -r hour
+				[ -z "$hour" ] && hour="00"
+
+				printf "Enter 2 digit minute(MM), ENTER for (00):" >&2
+				read -r minute
+				[ -z "$minute" ] && minute="00"
+
+				printf "Enter 2 digit second(SS), ENTER for (00):" >&2
+				read -r second
+				[ -z "$second" ] && second="00"
+			}
+
+			echo "Enter Start Date." >&2
+			getdate
+			yyyymmddStart="$year$month$day"
+			hhmmssStart="$hour$minute$second"
+			
+			echo "Enter End Date." >&2
+			getdate
+			yyyymmddEnd="$year$month$day"
+			hhmmssEnd="$hour$minute$second"
+
+			printf "Enter the summary of the calendar event:" >&2
+			read -r summary
+			
+			calendar="$(printf "%s\n" \
+			"BEGIN:VEVENT" \
+			"SUMMARY:$summary" \
+			"DTSTART:${yyyymmddStart}T${hhmmssStart}Z" \
+			"DTEND:${yyyymmddEnd}T${hhmmssEnd}Z" \
+			"END:VEVENT" \
+			)"
+
+			choice="$(printf "done\nedit\nreenter" | dmenuScript "Would you like to edit the input:")" || exit 1
+			case "$choice" in
+				"done") echo "QR-Code Complete" >&2 ;;
+				"edit") userInput "$calendar"; calendar="$(cat "$TMPFILE")" ;;
+				"reenter") calendar || exit 1; return 0 ;;
+				*) exit 1;;
+			esac
+		} ;;
+		*) exit 1 ;;
+	esac
+	qrencodeData "$calendar"
+}
+
+
+
+# TODO:contanct, calendar options, wifi
+
+# Useful resuource I used when creating this script
+# https://github.com/zxing/zxing/wiki/Barcode-Contents#url
+
+ensure_terminal() {
+	if [ -t 0 ]; then
+		# stdin is a terminal, run normally
+		"$@"
+	else
+		# stdin is not a terminal, possibly piped
+		stdin_data="$(cat)"
+		export STDIN_DATA="$stdin_data"
+
+		if [ -n "$stdin_data" ]; then
+			#  stdin has data, so input was piped
+			"$@"
+		else
+			# no stdin not a terminal and has not set value, so start terminal
+
+			# this is code for if I want to add flags
+			# export TERMINAL_STARTED=1
+
+			exec "$TERMINAL" -e "$(realpath "$0")" "$@"
+		fi
+	fi
+}
+
+stdin () {
+	userInput "$STDIN_DATA"; qrencodeData "$(cat "$TMPFILE")"
+}
+
+edit () {
+	printf "Press ENTER to begin screenshotting QR-Code..."
+	read -r _ 
+
+	userInput "$(qrread)"
+	qrencodeData "$(cat "$TMPFILE")"
+}
+
+wifi () {
+	clipChoice="$(printf "template\nexample\noptions" | dmenuScript "Select WiFi option:")" || exit 1
+	case "$clipChoice" in
+		"template") userInput "WIFI:T:ENCRYPTIONTYPE;S:SSID;P:PASSWORD;;"; qrencodeData "$(cat "$TMPFILE")" ;;
+		"example") userInput "WIFI:T:WPA2;S:myssid;P:password123;H:false;;"; qrencodeData "$(cat "$TMPFILE")" ;;
+		"options") { 
+			type="$(printf "WPA2\nWPA\nnopass" | dmenuScript "Enter WIFI security type:")" || exit 1
+
+			hidden="$(printf "false(visable)\ntrue(hidden)" | dmenuScript "Enter WIFI network hidden status:")" || exit 1
+			hidden="${hidden%%\(*}"
+
+			printf "Enter WIFI SSID:" >&2
+			read -r ssid
+			[ -n "$ssid" ] || exit 1
+
+			if [ "$type" = "nopass" ]; then
+				password=""
+			else
+				printf "Enter WIFI Password:" >&2
+				read -r password
+				[ -n "$password" ] || exit 1
+			fi
+
+			qrencodeData "$(printf "%s" "WIFI:T:$type;S:$ssid;P:$password;H:$hidden;;")"
+			# there are more options, but I don't know what they do and hove not used
+			# them like EPA method, anamous identity, and phase 2 method
+		} ;;
+		*) exit 1;;
+	esac
+}
+
+main () {
+	# this is code for if I want to add flags
+	# clip=
+	# show_help=
+	# view=
+	# generate=
+	#
+	# while getopts "hcvg" opt; do
+	#   case "$opt" in
+	# 	h) show_help=1 ;;
+	# 	c) clip=1 ;;
+	# 	v) view=1 ;;
+	# 	g) generate=1 ;;
+	# 	\?) echo "Invalid option"; exit 1 ;;
+	#   esac
+	# done
+	# this is not needed now as the text after arguments is not actually used
+	# shift $((OPTIND - 1))
+	#
+	# [ -n "$show_help" ] && {
+	# 	printf "%s\n" \
+	# 	"Usage: $0" \
+	# 	"Usage: $0 [options] < /dev/stdin" \
+	# 	"" \
+	# 	"	-h	help menu" \
+	# 	"	-c	copy stdin to clipboard" \
+	# 	"   -v	view qr code, must be used with -g" \
+	# 	"	-g	generate qr code"  \
+	# 	""
+	# 	exit 1
+	# }
+
+
+	XCLIPBOARD="$(xclip -o -sel clip)"
+
+	if [ -n "$STDIN_DATA" ]; then
+		chosen="stdin"
+	else
+		printf "Choose a option for generating a QR-Code\n" >&2
+		chosen="$(printf "%s\n" \
+			"clipboard(create QR code from clipboard data)" \
+			"general(create qr code in $EDITOR)" \
+			"url(create a URL QR code)" \
+			"email(create a email QR code)" \
+			"phone(create a phone QR code)" \
+			"sms(create SMS QR code)" \
+			"geo,location(create geo QR code with location data), calander" \
+			"calendar(create a calendar event QR code)" \
+			"edit(edit a QR-Code with $EDITOR)" \
+			"wifi(create a wifi QR-Code)" \
+			| dmenuScript "Select QR-Code Type:")" || exit 1
+		chosen="${chosen%%\(*}"
+	fi
+
+	echo "Chosen QR-Code Type: $chosen" >&2
+
+	TMPFILE="$(mktemp)"
+	case "$chosen" in
+		"clipboard") clipboard ;;
+		"general") general ;;
+		"url") url ;;
+		"email") email ;;
+		"phone") phone ;;
+		"sms") sms ;;
+		"geo,location") geo ;;
+		"calendar") calendar ;;
+		"stdin") stdin ;;
+		"edit") edit ;;
+		"wifi") wifi ;;
+		*) exit 1 ;;
+	esac
+
+	# not needed with qrimg
+	# nsxiv -s f "$FILEPATH"
+}
+
+ensure_terminal main "$@"
+
+
+# would be nice if this were not the case poossibly add clipboard manager or something
+printf "press Enter to exit the program, this will delete clipboard data from program:" >&2
+
+read -r _
