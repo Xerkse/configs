@@ -6,7 +6,7 @@
 
 
 #get the users choice out of the options
-choice="$(printf "shutdown\nreboot\nout\nlock\nsuspend\nblack\nquit" | dmenu -l 10 -p "power options:")" &&
+choice="$(printf "shutdown\nreboot\nout\nlock\nsuspend\nblack\nsl(suspendlock)\nquit" | dmenu -l 10 -p "power options:")" &&
 
 # OLD
 # #stop
@@ -44,13 +44,14 @@ choice="$(printf "shutdown\nreboot\nout\nlock\nsuspend\nblack\nquit" | dmenu -l 
 
 
 case "$choice" in
-	quit) echo "program terminated"; exit 1;;
-	shutdown) shutdown now -P;;
-	reboot) reboot;;
-	out) pkill -KILL -u xerkse;;
-	lock) setsid -f slock && systemctl suspend;;
-	suspend) systemctl suspend;;
-	black) sleep 1; xset dpms force off;;
+	"quit") echo "program terminated"; exit 1;;
+	"shutdown") shutdown now -P;;
+	"reboot") reboot;;
+	"out") pkill -KILL -u xerkse;;
+	"lock") setsid -f slock;;
+	"suspend") systemctl suspend;;
+	"black") sleep 1; xset dpms force off;;
+	"sl"*) setsid -f slock && systemctl suspend;;
 	*) echo "unknown option, exiting"; exit;;
 esac
 
