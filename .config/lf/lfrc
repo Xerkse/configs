@@ -97,6 +97,30 @@ cmd asciiArt ${{
 	jp2a "$fx"
 	read ans
 }}
+
+cmd extract ${{
+	#clear; tput cup $(($(tput lines)/3)); tput bold
+	set -f
+	printf "%s\n" "$fx"
+	printf "extract?[y/N]"
+	read ans
+	[ $ans = "y" ] && {
+	case $fx in
+	      *.tar.bz2)   tar xjf $fx     ;;
+	      *.tar.gz)    tar xzf $fx     ;;
+	      *.bz2)       bunzip2 $fx     ;;
+	      *.rar)       unrar e $fx     ;;
+	      *.gz)        gunzip $fx      ;;
+	      *.tar)       tar xf $fx      ;;
+	      *.tbz2)      tar xjf $fx     ;;
+	      *.tgz)       tar xzf $fx     ;;
+	      *.zip)       unzip $fx       ;;
+	      *.Z)         uncompress $fx  ;;
+	       *.7z)        7z x $fx        ;;
+	       *.tar.xz)    tar xf $fx      ;;
+	       esac
+	}
+}}
 #cmd moveto ${{
 #	clear; tput cup $(($(tput lines)/3)); tput bold
 #	set -f
@@ -131,18 +155,18 @@ cmd nsxiv_list ${{
 }}
 
 # Bindings
-#map <c-f> $lf -remote "send $id select \"$(fzf)\""
+map <c-f> $lf -remote "send $id select \"$(fzf)\""
+
+for changing directory to bm-dirs
 #map J $lf -remote "send $id cd $(sed -e 's/\s*#.*//' -e '/^$/d' -e 's/^\S*\s*//' ${XDG_CONFIG_HOME:-$HOME/.config}/shell/bm-dirs | fzf)"
-map <enter> shell
-map L $(setsid -f libreoffice $fx)
-map <c-t> $(newTerminal)
-map <c-g> $(gimp $fx)
-#map S ehco "$fx"
-# | nsxiv -ia )
 map gg top
+map E extract
+
 map DD delete
 map D<c-d> sudodelete
+
 map <c-n> push :mkdir<space>
+
 map <c-r> reload
 map <c-s> set hidden!
 map <enter> shell
@@ -151,30 +175,46 @@ map X !$f
 #map o &mimeopen $f
 #map O $mimeopen --ask $f
 #map E $(echo "$fx")
-map E $(exiftool "$fx" | fzf)
+
+map <c-e> $(exiftool "$fx" | fzf)
+
+#map S ehco "$fx"
+# | nsxiv -ia )
 
 map sn set sortby name
 map sN set sortby natural
-map A rename # at the very end
-map c push A<c-u> # new rename
+
+map A :rename; cmd-end # at the very end
+
+map C push A<c-u> # new rename
+
 map I push A<c-a> # at the very beginning
 map i push A<a-b><a-b><a-f> # before extension
-map a push A<a-b> # after extension
+
+
 #map B bulkrename
 #map b $setbg $f
 
 #map <c-e> down
 #map <c-y> up
 map V $(st -e $EDITOR $fx &)
+
+map U $printf "%s" "$fx" | clip
+map u $printf "%s" "$fx" | sed 's/.*\///' | clip
 map <c-S> $(setsid -f sent $fx &)
 
 map S nsxiv_list
 
 map <c-v> $(setsid -f vlc $fx &)
 
-#map W $setsid -f $TERMINAL >/dev/null 2>&1
+map W $setsid -f $TERMINAL >/dev/null 2>&1
 
 #map Y $printf "%s" "$fx" | xclip -selection clipboard
 
 # Source Bookmarks
 #source "~/.config/lf/shortcutrc"
+
+map <enter> shell
+map L $(setsid -f libreoffice $fx)
+map <c-t> $(newTerminal)
+map <c-g> $(gimp $fx)
