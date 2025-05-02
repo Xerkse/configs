@@ -6,7 +6,7 @@
 
 
 #get the users choice out of the options
-choice="$(printf "shutdown\nreboot\nout\nlock\nsuspend\nblack\nsl(suspendlock)\nquit" | dmenu -l 10 -p "power options:")" &&
+choice="$(printf "shutdown\nreboot\nout\nlock\nsuspend(will lock)\nblack\nbs(lock and black)\nquit" | dmenu -l 10 -p "power options:")" &&
 
 # OLD
 # #stop
@@ -49,8 +49,9 @@ case "$choice" in
 	"reboot") reboot;;
 	"out") pkill -KILL -u xerkse;;
 	"lock") setsid -f slock;;
-	"suspend") systemctl suspend;;
+	"suspend"*) systemctl suspend;;
 	"black") sleep 1; xset dpms force off;;
+	"bs"*) setsid -f slock; sleep 1 && xset dpms force off;;
 	"sl"*) setsid -f slock && systemctl suspend;;
 	*) echo "unknown option, exiting"; exit;;
 esac

@@ -75,7 +75,7 @@ cmd delete ${{
 	#[ $ans = "y" ] && rm -rf -- $fx
 	foldername="$(date +%Y-%m-%d_%H:%M:%S_%N)"
 	mkdir "$HOME/.trash/$foldername"
-	[ $ans = "y" ] && mv $fx "$HOME/.trash/$foldername/"
+	[ $ans = "y" ] && mv -b $fx "$HOME/.trash/$foldername/"
 }}
 
 cmd sudodelete ${{
