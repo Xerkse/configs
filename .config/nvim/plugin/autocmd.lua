@@ -1,6 +1,5 @@
 vim.opt_local.formatoptions:remove "o"
 
-
 -- local daniel_format = vim.api.nvim_create_augroup('DanielFormat', { clear = true })
 -- vim.api.nvim_create_autocmd("BufEnter", {
 -- 	group = daniel_format,
