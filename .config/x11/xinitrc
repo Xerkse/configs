@@ -16,6 +16,9 @@ fi
 # Activate dbus variables
 dbus-update-activation-environment --all
 #dbus-launch dwm
+
+#maks screen lock on blank
+xss-lock -- slock & 
 while true; do
 	#fix escape
 	inputmaps &
