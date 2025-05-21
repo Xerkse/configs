@@ -25,8 +25,10 @@ set sortby name
 # cmds/functions
 cmd open ${{
     case $(file --mime-type "$(readlink -f $f)" -b) in
+	application/x-executable|application/x-pie-executable) setsid -f "$fx" ;;
 	#application/vnd.openxmlformats-officedocument.spreadsheetml.sheet) localc $fx ;;
-	image/vnd.djvu|application/pdf|application/octet-stream|application/postscript) setsid -f zathura $fx >/dev/null 2>&1 ;;
+	image/vnd.djvu|application/pdf|application/epub*|application/octet-stream|application/postscript) setsid -f zathura $fx >/dev/null 2>&1 ;;
+        text/html) setsid -f "$BROWSER" $fx;;
         text/*|application/javascript|application/json|inode/x-empty) $EDITOR $fx;;
 	application/vnd.openxmlformats-officedocument.*|application/vnd.oasis.opendocument.*) setsid -f libreoffice $fx >/dev/null 2>&1 ;;
 
@@ -157,7 +159,7 @@ cmd nsxiv_list ${{
 # Bindings
 map <c-f> $lf -remote "send $id select \"$(fzf)\""
 
-for changing directory to bm-dirs
+# for changing directory to bm-dirs
 #map J $lf -remote "send $id cd $(sed -e 's/\s*#.*//' -e '/^$/d' -e 's/^\S*\s*//' ${XDG_CONFIG_HOME:-$HOME/.config}/shell/bm-dirs | fzf)"
 map gg top
 map E extract
@@ -165,7 +167,7 @@ map E extract
 map DD delete
 map D<c-d> sudodelete
 
-map <c-n> push :mkdir<space>
+map <c-n> push :$mkdir<space>
 
 map <c-r> reload
 map <c-s> set hidden!
