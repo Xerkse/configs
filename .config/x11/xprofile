@@ -23,10 +23,20 @@ xrdb ${XDG_CONFIG_HOME:-$HOME/.config}/x11/xresources & xrdbpid=$!	# Uncomment t
 #	pidof -sx "$program" || "$program" &
 #done >/dev/null 2>&1
 
-autostart="xcompmgr dunst setDwmStatusBar inputmaps"
+#picom --no-fading-openclose --fade-delta=2
+# xcompmgr
+autostart=$(cat <<EOF
+dunst
+picom --no-fading-openclose --fade-delta=2
+dunst
+setDwmStatusBar
+inputmaps
+EOF
+)
 
-for program in $autostart; do
-	pidof -sx "$program" || "$program" &
+echo "$autostart" | while IFS= read -r cmd; do
+	program=$(printf "%s" "$cmd" | awk '{print $1}')
+	pidof -sx "$program" || sh -c "$cmd" &
 done >/dev/null 2>&1
 
 # Ensure that xrdb has finished running before moving on to start the WM/DE.
