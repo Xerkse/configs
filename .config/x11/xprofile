@@ -28,7 +28,6 @@ xrdb ${XDG_CONFIG_HOME:-$HOME/.config}/x11/xresources & xrdbpid=$!	# Uncomment t
 autostart=$(cat <<EOF
 dunst
 picom --no-fading-openclose --fade-delta=2
-dunst
 setDwmStatusBar
 inputmaps
 EOF
