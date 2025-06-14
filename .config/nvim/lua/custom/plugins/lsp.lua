@@ -1,16 +1,21 @@
+--KITCKSTART.NVIM
 return {
 	{ -- LSP Configuration & Plugins
 		"neovim/nvim-lspconfig",
-		opts = { inlay_hints = { enabled = true }, },
+		-- opts = { inlay_hints = { enabled = true }, }, --possibly for typing,
+		-- don't remmber
 		dependencies = {
 			-- Automatically install LSPs and related tools to stdpath for neovim
-			"williamboman/mason.nvim",
-			"williamboman/mason-lspconfig.nvim",
+			{"mason-org/mason.nvim", opts = {} },
+			"mason-org/mason-lspconfig.nvim",
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
 
 			-- Useful status updates for LSP.
 			-- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
 			{ "j-hui/fidget.nvim", opts = {} },
+
+			-- Allows extra capabilities provided by blink.cmp
+			'saghen/blink.cmp',
 		},
 		config = function()
 			-- Brief Aside: **What is LSP?**
@@ -122,8 +127,11 @@ return {
 			--  By default, Neovim doesn't support everything that is in the LSP Specification.
 			--  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
 			--  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
-			local capabilities = vim.lsp.protocol.make_client_capabilities()
-			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+			-- local capabilities = vim.lsp.protocol.make_client_capabilities()
+			-- capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+			--  When you add blink.cmp, luasnip, etc. Neovim now has *more* capabilities.
+			--  So, we create new capabilities with blink.cmp, and then broadcast that to the servers.
+			local capabilities = require('blink.cmp').get_lsp_capabilities()
 
 			-- Enable the following language servers
 			--  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
@@ -152,30 +160,30 @@ return {
 				csharp_ls = {},
 
 				lua_ls = {
-					-- cmd = {...},
-					-- filetypes { ...},
-					-- capabilities = {},
-					settings = {
-						Lua = {
-							runtime = { version = "LuaJIT" },
-							workspace = {
-								checkThirdParty = false,
-								-- Tells lua_ls where to find all the Lua files that you have loaded
-								-- for your neovim configuration.
-								library = {
-									"${3rd}/luv/library",
-									unpack(vim.api.nvim_get_runtime_file("", true)),
-								},
-								-- If lua_ls is really slow on your computer, you can try this instead:
-								-- library = { vim.env.VIMRUNTIME },
-							},
-							completion = {
-								callSnippet = "Replace",
-							},
-							-- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-							-- diagnostics = { disable = { 'missing-fields' } },
-						},
-					},
+					-- -- cmd = {...},
+					-- -- filetypes { ...},
+					-- -- capabilities = {},
+					-- settings = {
+					-- 	Lua = {
+					-- 		runtime = { version = "LuaJIT" },
+					-- 		workspace = {
+					-- 			checkThirdParty = false,
+					-- 			-- Tells lua_ls where to find all the Lua files that you have loaded
+					-- 			-- for your neovim configuration.
+					-- 			library = {
+					-- 				"${3rd}/luv/library",
+					-- 				unpack(vim.api.nvim_get_runtime_file("", true)),
+					-- 			},
+					-- 			-- If lua_ls is really slow on your computer, you can try this instead:
+					-- 			-- library = { vim.env.VIMRUNTIME },
+					-- 		},
+					-- 		completion = {
+					-- 			callSnippet = "Replace",
+					-- 		},
+					-- 		-- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+					-- 		-- diagnostics = { disable = { 'missing-fields' } },
+					-- 	},
+					-- },
 				},
 			}
 
@@ -185,17 +193,18 @@ return {
 			--    :Mason
 			--
 			--  You can press `g?` for help in this menu
-			require("mason").setup()
 
 			-- You can add other tools here that you want Mason to install
 			-- for you, so that they are available from within Neovim.
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
-				"stylua", -- Used to format lua code
+				'stylua', -- Used to format Lua code
 			})
-			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
+			require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
-			require("mason-lspconfig").setup({
+			require("mason-lspconfig").setup{
+				ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
+				automatic_installation = false,
 				handlers = {
 					function(server_name)
 						local server = servers[server_name] or {}
@@ -206,7 +215,7 @@ return {
 						require("lspconfig")[server_name].setup(server)
 					end,
 				},
-			})
+			}
 		end,
 	},
 }

@@ -5,7 +5,7 @@ shopt -s nullglob globstar
 
 
 #get the users choice out of the options
-category_choice=$(printf "password\nusername\nemail\nwebsite\notp\nedit\nlast\nquit" | dmenu -l 10 -x -p "pass options:") || exit
+category_choice=$(printf "last\npassword\nusername\nemail\nwebsite\notp\nedit\nquit" | dmenu -l 10 -x -p "pass options:") || exit
 
 password_choice=""
 
