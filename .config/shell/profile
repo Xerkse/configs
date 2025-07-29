@@ -1,6 +1,10 @@
 #add to path
 export PATH="$(find ~/.local/bin -type d | paste -sd ':' -):$HOME/:/otp:$HOME/.cargo/env:$PATH:/var/lib/snapd/snap/bin/"
 
+#change nvim to the man page navigator
+export MANPAGER='nvim +Man!'
+export MANWIDTH=999
+
 export EDITOR="nvim"
 export TERMINAL="st"
 export BROWSER="firefox"

@@ -27,3 +27,5 @@ while true; do
 	#sleep 3 && setTheme &
 	setbg && dwm 2> ~/.dwm.log
 done
+
+
