@@ -2,7 +2,7 @@
 
 sudo mount -t cifs //192.168.1.10/xerkse_dataset /mnt -o "credentials=$HOME/.smbcred,uid=$(id -u),gid=$(id -g)"
 
-# [xerkse@T15g ~/Documents/projects/xerkse]$ sshfs -o allow_other -p 8022 u0_a338@192.168.1.151:/storage/emulated/0/ ./mnt
+# sshfs -o allow_other -p 8022 u0_a338@192.168.1.12:/storage/emulated/0/ ./mnt
 # u0_a338@192.168.1.151's password:
 
 # used in case i need to set permissions so everything can be edited
