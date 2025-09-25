@@ -15,7 +15,8 @@ return {
         "rcarriga/nvim-dap-ui",
         
         -- virutaltext ability
-        -- "theHamsta/nvim-dap-virtual-text",
+        "theHamsta/nvim-dap-virtual-text",
+
         -- dependency for ncim-dap-ui
         "nvim-neotest/nvim-nio",
 
@@ -33,7 +34,7 @@ return {
         require("dapui").setup()
         -- require("dap-go").setup()
         
-        -- require("nvim-dap-virtual-text").setup()
+        require("nvim-dap-virtual-text").setup()
 
         require("mason-nvim-dap").setup({
             -- Makes a best effort to setup the various debuggers with

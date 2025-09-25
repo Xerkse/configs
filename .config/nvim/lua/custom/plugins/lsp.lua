@@ -16,6 +16,19 @@ return {
 
 			-- Allows extra capabilities provided by blink.cmp
 			'saghen/blink.cmp',
+
+					
+			-- {
+			-- 	'mrcjkb/rustaceanvim',
+			-- 	version = '^6', -- Recommended
+			-- 	lazy = false, -- This plugin is already lazy
+			-- 	["rust_analyzer"] = {
+			-- 		cargo = {
+			-- 			allFeatures = true,
+			-- 		},
+			-- 	},
+			-- }
+
 		},
 		config = function()
 			-- Brief Aside: **What is LSP?**
@@ -142,7 +155,7 @@ return {
 			local servers = {
 				clangd = {},
 				-- gopls = {},
-				rust_analyzer = {},
+				-- rust_analyzer = {},
 				-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
 				--
 				-- Some languages (like typescript) have entire language plugins that can be useful:
@@ -152,7 +165,10 @@ return {
 				-- tsserver = {},
 				--
 				texlab = {},
-				bashls = {},
+				bashls = {
+					cmd = { 'bash-language-server', 'start' },
+					filetypes = { 'bash', 'sh' }
+				},
 				pyright = {},
 				csharp_ls = {},
 

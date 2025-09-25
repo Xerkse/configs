@@ -37,6 +37,10 @@ export CARGO_HOME="$XDG_DATA_HOME/cargo"
 #export HISTFILE="$XDG_DATA_HOME/history" #this conflicts with the zsh one in cashe
 #export MBSYNCRC="$XDG_CONFIG_HOME/mbsync/config"
 #export ELECTRUMDIR="$XDG_DATA_HOME/electrum"
+
+
+#Python things
+export PIP_REQUIRE_VIRTUALENV=0 #makes it so that pip can not install packages to nonvenv, should already not be possible, but something may change
 export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
 #export SQLITE_HISTORY="$XDG_DATA_HOME/sqlite_history"
 
@@ -59,6 +63,8 @@ export _JAVA_AWT_WM_NONREPARENTING=1      # Fix for Java applications in dwm
 
 # added for functionality with qr programs
 export IMAGE_VIEWER="nsxiv"
+
+#nvim
 
 # Start graphical server on user's current tty if not already running.
 [ "$(tty)" = "/dev/tty1" ] && ! pidof -s Xorg >/dev/null 2>&1 && exec startx "$XINITRC"

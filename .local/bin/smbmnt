@@ -15,16 +15,13 @@ sudo mount -t cifs //192.168.1.10/xerkse_dataset /mnt -o "credentials=$HOME/.smb
 
 #rsync -aAXv /home/xerkse/Documents /home/xerkse/.password-store /mnt/bakups/
 
-# copy documents from PC to Server
-# sudo rsync -aAXv --exclude backups ./* /media/bakups/Documents/
+# copy new Backups from PC to Server
+# rsync -aAXv ~/Backups/* --ignore-existing /mnt/xerkse/Backups/
 
-#only add new things and do not mess with things already there.
-#sudo rsync -aAXv --ignore-existing ./backups /media/bakups/Documents/
-
+# delete local files that are not in sync with the server
 # sudo rsync -aAXv --delete-delay /media/bakups/Documents/backups ./ | grep "deleting"
 
 
-# command to sunc and delete deleted ones
+# sync files from local to server and delete files not existing on local machine
 # sudo rsync -aAXv --delete --ignore-existing --info=DEL $HOME/Documents/backups /mnt/bakups/Documents/
-
 # sudo rsync -aAX --delete --ignore-existing --info=DEL /media/bakups/Documents/backups ./

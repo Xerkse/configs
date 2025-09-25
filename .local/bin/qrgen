@@ -65,7 +65,7 @@ general () {
 }
 
 clipboard () {
-	choice="$(printf "edit\ndone" | dmenuScript "Would you like to edit the input:")" || exit 1
+	choice="$(printf "done\nedit" | dmenuScript "Would you like to edit the input:")" || exit 1
 	case "$choice" in
 		"done") qrencodeData "$XCLIPBOARD" ;;
 		"edit") userInput "$XCLIPBOARD"; qrencodeData "$(cat "$TMPFILE")" ;;
