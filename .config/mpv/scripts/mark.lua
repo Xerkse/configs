@@ -7,9 +7,11 @@ function mark_current()
         if not marked[path] then
             marked[path] = true
             print("Marked: " .. path)
+            mp.osd_message("Marked: " .. path)
         else
             marked[path] = nil
             print("Unmarked: " .. path)
+            mp.osd_message("Unmarked: " .. path)
         end
     end
 end
