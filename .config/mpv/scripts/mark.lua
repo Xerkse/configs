@@ -6,11 +6,11 @@ function mark_current()
     if path then
         if not marked[path] then
             marked[path] = true
-            print("Marked: " .. path)
+            --mp.msg.warn("Marked: " .. path)
             mp.osd_message("Marked: " .. path)
         else
             marked[path] = nil
-            print("Unmarked: " .. path)
+            --mp.msg.warn("Unmarked: " .. path)
             mp.osd_message("Unmarked: " .. path)
         end
     end
@@ -23,13 +23,17 @@ function write_marks()
     end
 
     local f, err = io.open("/tmp/mpv_marked.txt", "w")
-	if not f then
-        print("Error opening file for writing: " .. (err or "unknown"))
-        return
-	end
 
-	f:write(table.concat(out, "\n"))
-	f:close()
+    if not f then
+        print("Error opening file for writing: " .. (err or "unknown"))
+        mp.command("quit 1")
+    end
+
+
+    io.write(table.concat(out, "\n"))
+
+    f:write(table.concat(out, "\n"))
+    f:close()
 end
 
 local marked = false

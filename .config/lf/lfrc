@@ -220,9 +220,5 @@ map <enter> shell
 map L $(setsid -f libreoffice $fx)
 map <c-t> $(newTerminal)
 map <c-g> $(gimp $fx)
-
-# map <a-m> !setsid -f st -e mpv --profile=pseudo-gui "$fx" &
-
-# map <a-m> !files=($fx); [ ${#files[@]} -gt 0 ] && setsid st -e mpv --profile=pseudo-gui "${files[@]}" >/dev/null 2>&1
-# map <a-m> !st -e bash -c 'mpv --profile=pseudo-gui "$0"' "$fx"
 map <a-m> $(setsid -f mpv --profile=pseudo-gui $fx)
+map <c-u> unselect
