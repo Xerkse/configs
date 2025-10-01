@@ -30,9 +30,9 @@ function write_marks()
     end
 
 
-    io.write(table.concat(out, "\n"))
-
+    io.stderr:write("Marks written to file: " .. "/tmp/mpv_marked.txt\n")
     f:write(table.concat(out, "\n"))
+    io.write(table.concat(out, "\n"))
     f:close()
 end
 
