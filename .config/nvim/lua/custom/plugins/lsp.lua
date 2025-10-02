@@ -169,7 +169,12 @@ return {
 					cmd = { 'bash-language-server', 'start' },
 					filetypes = { 'bash', 'sh' }
 				},
-				pyright = {},
+				pyright = {
+
+					root_dir = ( 
+						".venv"          -- add this if you want the venv folder itself to be treated as root
+					),
+				},
 				csharp_ls = {},
 
 				lua_ls = {
