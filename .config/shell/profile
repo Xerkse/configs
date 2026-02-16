@@ -30,8 +30,8 @@ export PASSWORD_STORE_DIR="$XDG_DATA_HOME/password-store"
 #export TMUX_TMPDIR="$XDG_RUNTIME_DIR"
 #export ANDROID_SDK_HOME="$XDG_CONFIG_HOME/android"
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
-#export GOPATH="$XDG_DATA_HOME/go"
-#export GOMODCACHE="$XDG_CACHE_HOME/go/mod"
+export GOPATH="$XDG_DATA_HOME/go"
+export GOMODCACHE="$XDG_CACHE_HOME/go/mod"
 #export ANSIBLE_CONFIG="$XDG_CONFIG_HOME/ansible/ansible.cfg"
 #export UNISON="$XDG_DATA_HOME/unison"
 #export HISTFILE="$XDG_DATA_HOME/history" #this conflicts with the zsh one in cashe
@@ -64,7 +64,7 @@ export _JAVA_AWT_WM_NONREPARENTING=1      # Fix for Java applications in dwm
 # added for functionality with qr programs
 export IMAGE_VIEWER="nsxiv"
 
-#nvim
+export PATH="$PATH:$GOPATH/bin"
 
 # Start graphical server on user's current tty if not already running.
 [ "$(tty)" = "/dev/tty1" ] && ! pidof -s Xorg >/dev/null 2>&1 && exec startx "$XINITRC"

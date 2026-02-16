@@ -25,7 +25,7 @@ for PID in $PIDlist; do
 		# This is a thing that nvim does and I don't know why, but this is a
 		# fix, I will make it more general with * whenever I encounter it in
 		# another language.
-		"$HOME/.local/share/nvim/mason/packages/pyright/node_modules/pyright/dist") continue ;;
+		"$HOME/.local/share/nvim/mason/"*) continue ;;
 		*) break;;
 	esac
 	# [ "$cwd" != "$HOME" ] && [ "$cwd" != '/' ] && break

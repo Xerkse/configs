@@ -37,6 +37,7 @@ cmd open ${{
 	#image/svg+xml) display -- $f ;;
 	image/*) file_list=$(find "$PWD" -maxdepth 1 -type f | grep -i "\.\(png\|jpg\|jpeg\|gif\|webp\|avif\|tif\|ico\)\(_large\|\.~[[:digit:]]\+~\)*$");
 		index="$(echo "$file_list" | grep -Fxn "$fx" | cut -d ":" -f 1)";
+		echo "$f"
 		#echo "$PWD"
 		#echo "$file_list"
 		#echo "$fx"
@@ -157,7 +158,9 @@ cmd nsxiv_list ${{
 }}
 
 # Bindings
-map <c-f> $lf -remote "send $id select \"$(fzf)\""
+
+cmd fzf_current_directory ${{$lf -remote "send $id select \"$(fzf)\"" #FZF}}
+map <c-x>f fzf_current_directory
 
 # for changing directory to bm-dirs
 #map J $lf -remote "send $id cd $(sed -e 's/\s*#.*//' -e '/^$/d' -e 's/^\S*\s*//' ${XDG_CONFIG_HOME:-$HOME/.config}/shell/bm-dirs | fzf)"
@@ -191,7 +194,7 @@ map A :rename; cmd-end # at the very end
 map C push A<c-u> # new rename
 
 map I push A<c-a> # at the very beginning
-map i push A<a-b><a-b><a-f> # before extension
+# map i push A<a-b><a-b><a-f> # before extension
 
 
 #map B bulkrename
@@ -199,17 +202,25 @@ map i push A<a-b><a-b><a-f> # before extension
 
 #map <c-e> down
 #map <c-y> up
-map V $(st -e $EDITOR $fx &)
+map <c-x>v $(st -e $EDITOR $fx &) #editor
 
-map U $printf "%s" "$fx" | clip
-map u $printf "%s" "$fx" | sed 's/.*\///' | clip
-map <c-S> $(setsid -f sent $fx &)
+cmd copy_selected_paths ${{ $printf "%s" "$fx" | clip }}
+map <c-x>U copy_selected_paths
 
-map S nsxiv_list
+cmd copy_selected_file_names ${{$printf "%s" "$fx" | sed 's/.*\///' | clip #file name copy}}
+map <c-x>u copy_selected_file_names
 
-map <c-v> $(setsid -f vlc $fx &)
+cmd sent_on_files ${{$(setsid -f sent $fx &) #sent}}
+map <c-x>s sent_on_files
+# map S nsxiv_list
 
-map W $setsid -f $TERMINAL >/dev/null 2>&1
+cmd spek_on_files ${{$(setsid -f spek $fx &) #spek}}
+map <c-x>S spek_on_files
+
+cmd VLC_on_files ${{$(setsid -f vlc $fx &) #VLC}}
+map <c-x>v VLC_on_files
+
+# map W $setsid -f $TERMINAL >/dev/null 2>&1
 
 #map Y $printf "%s" "$fx" | xclip -selection clipboard
 
@@ -217,8 +228,15 @@ map W $setsid -f $TERMINAL >/dev/null 2>&1
 #source "~/.config/lf/shortcutrc"
 
 map <enter> shell
-map L $(setsid -f libreoffice $fx)
-map <c-t> $(newTerminal)
-map <c-g> $(gimp $fx)
-map <a-m> $(setsid -f mpv --profile=pseudo-gui $fx)
-map <c-u> unselect
+
+
+cmd libreoffice_on_files ${{$(setsid -f libreoffice $fx) #libreoffice}}
+map <c-x>l libreoffice_on_files
+
+# map <c-t> $(newTerminal)
+
+cmd gimp_on_files ${{$(gimp $fx) #Gimp}}
+map <c-x>g gimp_on_files
+
+cmd MPV_on_files ${{$(setsid -f mpv --profile=pseudo-gui $fx) #MPV}}
+map <c-x>m MPV_on_files

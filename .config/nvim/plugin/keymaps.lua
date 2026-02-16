@@ -62,7 +62,7 @@ vim.keymap.set("n", "<leader><F12>", ":w!<CR>:!compiler %<CR>", { desc = "Compil
 vim.keymap.set("n", "<F12>", ':w!<CR>:silent exec "!compiler %"<CR>', { desc = "Compile silent" })
 
 -- run keymaps
-vim.keymap.set("n", "<leader>r", ":!./%<CR>", { desc = "Run Current File" })
+vim.keymap.set("n", "<leader>r", ":w<CR>:!./%<CR>", { desc = "Run Current File" })
 
 
 -- run keymap
