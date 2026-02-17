@@ -356,22 +356,23 @@ Vagrantfile                 00;38;2;21;99;255
 *.ogx   
 
 # audio formats (extensions from dircolors defaults)
-*.aac   
-*.au    
-*.flac  
-*.m4a   
-*.mid   
-*.midi  
-*.mka   
-*.mp3   
-*.mpc   
-*.ogg   
-*.ra    
-*.wav   
-*.oga   
-*.opus  
-*.spx   
-*.xspf  
+*.aac   
+*.au    
+*.flac  			00;38;2;203;203;65
+*.m4a   			00;38;2;226;67;41
+*.mid   
+*.midi  
+*.mka   
+*.mp3   			00;38;2;204;62;68
+*.mpc   
+*.ogg   
+*.ra    
+*.wav   
+*.oga   
+*.opus  
+*.spx   
+*.xspf  
 
+
 # other🗎formats
 *.pdf        00;38;2;179;11;0

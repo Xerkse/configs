@@ -160,8 +160,11 @@ cmd nsxiv_list ${{
 
 # Bindings
 
-cmd fzf_current_directory ${{$lf -remote "send $id select \"$(fzf)\"" #FZF}}
-map <c-x>f fzf_current_directory
+cmd fzf_current_directory_to ${{$lf -remote "send $id select \"$(fzf)\"" #FZF}}
+map <c-x>f fzf_current_directory_to
+
+cmd fzf_current_directory ${{ fzf }}
+map <c-x>F fzf_current_directory
 
 # for changing directory to bm-dirs
 #map J $lf -remote "send $id cd $(sed -e 's/\s*#.*//' -e '/^$/d' -e 's/^\S*\s*//' ${XDG_CONFIG_HOME:-$HOME/.config}/shell/bm-dirs | fzf)"
@@ -217,6 +220,7 @@ map <c-x>S sent_on_files
 
 cmd spek_on_files ${{ setsid -f spek $f }}
 map <c-x>s spek_on_files
+map s spek_on_files
 
 cmd VLC_on_files ${{setsid -f vlc $fx }}
 map <c-x>V VLC_on_files
@@ -260,6 +264,6 @@ map <f-10> :{{
 }}
 
 map <f-11> :{{
-	set preview true
 	set ratios 1:2:3
+	set preview true
 }}
