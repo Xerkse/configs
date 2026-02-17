@@ -21,6 +21,7 @@ set cleaner '~/.config/lf/cleaner'
 set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xl"
 set previewer '~/.config/lf/scope'
 set sortby name
+set icons
 
 # cmds/functions
 cmd open ${{
@@ -210,15 +211,15 @@ map <c-x>U copy_selected_paths
 cmd copy_selected_file_names ${{$printf "%s" "$fx" | sed 's/.*\///' | clip #file name copy}}
 map <c-x>u copy_selected_file_names
 
-cmd sent_on_files ${{$(setsid -f sent $fx &) #sent}}
-map <c-x>s sent_on_files
+cmd sent_on_files ${{ setsid -f sent $fx }}
+map <c-x>S sent_on_files
 # map S nsxiv_list
 
-cmd spek_on_files ${{$(setsid -f spek $fx &) #spek}}
-map <c-x>S spek_on_files
+cmd spek_on_files ${{ setsid -f spek $f }}
+map <c-x>s spek_on_files
 
-cmd VLC_on_files ${{$(setsid -f vlc $fx &) #VLC}}
-map <c-x>v VLC_on_files
+cmd VLC_on_files ${{setsid -f vlc $fx }}
+map <c-x>V VLC_on_files
 
 # map W $setsid -f $TERMINAL >/dev/null 2>&1
 
@@ -230,13 +231,35 @@ map <c-x>v VLC_on_files
 map <enter> shell
 
 
-cmd libreoffice_on_files ${{$(setsid -f libreoffice $fx) #libreoffice}}
+cmd libreoffice_on_files ${{ setsid -f libreoffice $fx }}
 map <c-x>l libreoffice_on_files
 
 # map <c-t> $(newTerminal)
 
-cmd gimp_on_files ${{$(gimp $fx) #Gimp}}
+cmd gimp_on_files ${{ setsid -f gimp $fx }}
 map <c-x>g gimp_on_files
 
-cmd MPV_on_files ${{$(setsid -f mpv --profile=pseudo-gui $fx) #MPV}}
+cmd MPV_on_files ${{setsid -f mpv --profile=pseudo-gui $fx }}
 map <c-x>m MPV_on_files
+
+#for the music thing when there are multiple at same place, quickly move to
+map <f-1> &{{ [ -d "$PWD/1" ] || mkdir "$PWD/1"; mv "$f" "$PWD/1/" }}
+map <f-2> &{{ [ -d "$PWD/2" ] || mkdir "$PWD/2"; mv "$f" "$PWD/2/" }}
+map <f-3> &{{ [ -d "$PWD/3" ] || mkdir "$PWD/3"; mv "$f" "$PWD/3/" }}
+map <f-4> &{{ [ -d "$PWD/4" ] || mkdir "$PWD/4"; mv "$f" "$PWD/4/" }}
+map <f-5> &{{ [ -d "$PWD/5" ] || mkdir "$PWD/5"; mv "$f" "$PWD/5/" }}
+map <f-6> &{{ [ -d "$PWD/6" ] || mkdir "$PWD/6"; mv "$f" "$PWD/6/" }}
+map <f-7> &{{ [ -d "$PWD/7" ] || mkdir "$PWD/7"; mv "$f" "$PWD/7/" }}
+map <f-8> &{{ [ -d "$PWD/8" ] || mkdir "$PWD/8"; mv "$f" "$PWD/8/" }}
+map <f-9> &{{ [ -d "$PWD/9" ] || mkdir "$PWD/9"; mv "$f" "$PWD/9/" }}
+
+
+map <f-10> :{{
+	set preview false
+	set ratios 1
+}}
+
+map <f-11> :{{
+	set preview true
+	set ratios 1:2:3
+}}
