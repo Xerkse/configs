@@ -3,7 +3,7 @@
 # set it up. These are done automatically for LARBS users, but I will state
 # them here for others doing it manually.
 #
-# 1. ueberzug must be installed.
+# 1. ueberzugpp must be installed.
 # 2. The scope file (~/.config/lf/scope for me), must have a command similar to
 #    mine to generate ueberzug images.
 # 3. A `set cleaner` line as below is a cleaner script.
@@ -17,9 +17,14 @@ set shellopts '-eu'
 set ifs "\n"
 set scrolloff 10
 set period 1
-set cleaner '~/.config/lf/cleaner'
 set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xl"
-set previewer '~/.config/lf/scope'
+
+set previewer '~/.config/lf/preview'
+set sixel true
+
+# set cleaner '~/.config/lf/cleaner'
+# set previewer '~/.config/lf/scope'
+
 set sortby name
 set icons
 
