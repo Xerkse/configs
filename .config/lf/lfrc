@@ -19,11 +19,11 @@ set scrolloff 10
 set period 1
 set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xl"
 
-set previewer '~/.config/lf/preview'
-#set sixel true
+# set previewer '~/.config/lf/preview'
+# set sixel true
 
-# set cleaner '~/.config/lf/cleaner'
-# set previewer '~/.config/lf/scope'
+set cleaner '~/.config/lf/cleaner'
+set previewer '~/.config/lf/scope'
 
 set sortby name
 set icons
