@@ -40,8 +40,15 @@ case "$(printf "%s\n" "$(readlink -f "$1")" | tr '[:upper:]' '[:lower:]')" in
     *.xls | *.xlsx)
         ssconvert --export-type=Gnumeric_stf:stf_csv "$1" "fd://1" | batorcat --language=csv
         ;;
-    *.wav | *.mp3 | *.flac | *.m4a | *.wma | *.ape | *.ac3 | *.og[agx] | *.spx | *.opus | *.as[fx] | *.mka)
-        exiftool "$1"
+    # *.wav | *.mp3 | *.flac | *.m4a | *.wma | *.ape | *.ac3 | *.og[agx] | *.spx | *.opus | *.as[fx] | *.mka)
+    #     exiftool "$1"
+    #     ;;
+    *.wav | *.mp3 | *.flac | *.m4a | *.wma | *.ape | *.ac3 | *.og[agx] | *.spx | *.opus | *.as[fx] | *.mka )
+        if [ -f "${CACHE}.jpg" ] || ffmpegthumbnailer -i "$1" -o "${CACHE}.jpg" -s 0 -q 5; then
+                image "${CACHE}.jpg" "$2" "$3" "$4" "$5"
+        else
+                exiftool "$1"
+        fi
         ;;
     *.pdf)
         [ ! -f "${CACHE}.jpg" ] && pdftoppm -jpeg -f 1 -singlefile "$1" "$CACHE"
@@ -57,6 +64,9 @@ case "$(printf "%s\n" "$(readlink -f "$1")" | tr '[:upper:]' '[:lower:]')" in
     *.svg)
         [ ! -f "${CACHE}.jpg" ] && convert "$1" "${CACHE}.jpg"
         image "${CACHE}.jpg" "$2" "$3" "$4" "$5"
+        ;;
+    *.json)
+        jq -C < "$1"
         ;;
     *)
         batorcat "$1"

@@ -4,6 +4,10 @@ PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magent
 setopt autocd		# optoin to autocd 
 stty stop undef		# Disable ctrl-s to freeze terminal.
 setopt interactive_comments #ignore comments in shell
+unsetopt MULTIOS
+setopt POSIX_BUILTINS
+setopt pipefall
+#setopt SH_WORD_SPLIT
 
 #history in cache directory
 HISTSIZE=10000000

@@ -225,7 +225,7 @@ map <c-x>S sent_on_files
 
 cmd spek_on_files ${{ setsid -f spek $f }}
 map <c-x>s spek_on_files
-map s spek_on_files
+# map s spek_on_files
 
 cmd VLC_on_files ${{setsid -f vlc $fx }}
 map <c-x>V VLC_on_files
