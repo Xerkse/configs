@@ -6,15 +6,22 @@ stty stop undef		# Disable ctrl-s to freeze terminal.
 setopt interactive_comments #ignore comments in shell
 unsetopt MULTIOS
 setopt POSIX_BUILTINS
-setopt pipefall
-#setopt SH_WORD_SPLIT
+setopt pipefail
+
+setopt NO_NOMATCH
+
+setopt RM_STAR_WAIT
+setopt NO_NOMATCH #if no match then do not pass string
+#setopt SH_WORD_SPLIT #enable word splitting if not "" things
 
 #history in cache directory
 HISTSIZE=10000000
 SAVEHIST=10000000
-HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
+setopt APPEND_HISTORY
+setopt INC_APPEND_HISTORY
 
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/aliasrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/aliasrc"
+[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/profile" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/profile"
 
 # completions
 #autoload -Uz compinit

@@ -33,9 +33,9 @@ cmd open ${{
     case $(file --mime-type "$(readlink -f $f)" -b) in
 	application/x-executable|application/x-pie-executable) setsid -f "$fx" ;;
 	#application/vnd.openxmlformats-officedocument.spreadsheetml.sheet) localc $fx ;;
-	image/vnd.djvu|application/pdf|application/epub*|application/octet-stream|application/postscript) setsid -f zathura $fx >/dev/null 2>&1 ;;
+	image/vnd.djvu|application/pdf|application/epub*|application/postscript) setsid -f zathura $fx >/dev/null 2>&1 ;;
         text/html) setsid -f "$BROWSER" $fx;;
-        text/*|application/javascript|application/json|inode/x-empty) $EDITOR $fx;;
+        text/*|application/javascript|application/json|inode/x-empty|application/octet-stream) $EDITOR $fx;;
 	application/vnd.openxmlformats-officedocument.*|application/vnd.oasis.opendocument.*) setsid -f libreoffice $fx >/dev/null 2>&1 ;;
 
 	#application/vnd.openxmlformats-officedocument.spreadsheetml.sheet|application/vnd.oasis.opendocument.text|application/vnd.openxmlformats-officedocument.wordprocessingml.document) setsid -f libreoffice $fx >/dev/null 2>&1 ;;
@@ -271,4 +271,3 @@ map <f-10> :{{
 map <f-11> :{{
 	set ratios 1:2:3
 	set preview true
-}}

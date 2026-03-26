@@ -36,13 +36,41 @@ export GOPATH="$XDG_DATA_HOME/go"
 export GOMODCACHE="$XDG_CACHE_HOME/go/mod"
 #export ANSIBLE_CONFIG="$XDG_CONFIG_HOME/ansible/ansible.cfg"
 #export UNISON="$XDG_DATA_HOME/unison"
-#export HISTFILE="$XDG_DATA_HOME/history" #this conflicts with the zsh one in cashe
 #export MBSYNCRC="$XDG_CONFIG_HOME/mbsync/config"
 #export ELECTRUMDIR="$XDG_DATA_HOME/electrum"
 
+#shell
+export HISTFILE="$XDG_CACHE_HOME/shell/history" #this conflicts with the zsh one in cashe
+
+#parallel home
+export PARALLEL_HOME="$XDG_CONFIG_HOME/go/mod"
+
+#gpg
+export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
+
+#ipython
+export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"
+
+export PYENV_ROOT="XDG_CONFIG_HOME/pyenv"
+
+#gradle
+export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"
+
+# java
+export _JAVA_OPTIONS="-Djava.util.prefs.userRoot=$XDG_CONFIG_HOME/java"
+
+# npm
+export npm_config_cache="$XDG_CACHE_HOME/npm"
+
+#rust
+export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
+
+#wget
+alias wget="wget --hsts-file=$XDG_CACHE_HOME/wget-hsts"
 
 #Python things
 export PIP_REQUIRE_VIRTUALENV=0 #makes it so that pip can not install packages to nonvenv, should already not be possible, but something may change
+
 export PYTHONSTARTUP="$XDG_CONFIG_HOME/exiftool"
 #export SQLITE_HISTORY="$XDG_DATA_HOME/sqlite_history"
 

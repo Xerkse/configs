@@ -19,6 +19,8 @@ dbus-update-activation-environment --all
 
 #maks screen lock on blank
 xss-lock -- slock & 
+
+#xss-lock --transfer-sleep-lock -- slock &
 while true; do
 	#fix escape
 	inputmaps &
