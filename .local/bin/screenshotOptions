@@ -14,7 +14,7 @@ else
 	clipboard="do not use clipboard"
 fi
 
-filePath="$HOME/Pictures/Screenshots/$(date +%Y%m%d%H%M%S).jpg"
+filePath="$HOME/Pictures/screenshots/$(date +%Y%m%d%H%M%S).jpg"
 
 clip_file () {
 	if [ -z "$clipboard" ]; then
