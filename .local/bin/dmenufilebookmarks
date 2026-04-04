@@ -1,3 +1,9 @@
 #!/bin/sh -
 # "$EDITOR" "$(dmenu -l 20 -p "File:" < $HOME/.local/share/mybookmarks/filebookmarks || exit )"
-eval "$EDITOR" "$(dmenu -l 20 -p "File:" < $HOME/.local/share/mybookmarks/filebookmarks || exit )"
+chosen="$(dmenu -l 20 -p "File:" < $HOME/.local/share/mybookmarks/filebookmarks || exit )"
+chosen="$(eval echo "$chosen")"
+
+if [ -n "$chosen" ]; then
+	cd "${chosen%/*}"
+	eval "$EDITOR" "$chosen"
+fi
