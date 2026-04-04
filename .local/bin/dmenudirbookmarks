@@ -1,2 +1,2 @@
 #!/bin/sh -
-eval cd $(dmenu -l 20 -p "Directory:" < $HOME/.local/share/mybookmarks/directorybookmarks || exit )
+eval cd $(fzf < $HOME/.local/share/mybookmarks/directorybookmarks || exit )
