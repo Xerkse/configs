@@ -1,0 +1,3 @@
+#!/bin/sh -
+# "$EDITOR" "$(dmenu -l 20 -p "File:" < $HOME/.local/share/mybookmarks/filebookmarks || exit )"
+eval "$EDITOR" "$(dmenu -l 20 -p "File:" < $HOME/.local/share/mybookmarks/filebookmarks || exit )"
