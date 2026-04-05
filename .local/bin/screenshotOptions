@@ -24,7 +24,9 @@ clip_file () {
 }
 
 case $choice in
-        all\ monitors) maim "$filePath" -uoD -d 1 && clip_file;;
-	selection) maim "$filePath" -usoD && clip_file;;
+        all\ monitors) maim "$filePath" -uD -d 1 && clip_file;;
+	selection) maim "$filePath" -usD && clip_file;;
+ #        all\ monitors) maim "$filePath" -uoD -d 1 && clip_file;;
+	# selection) maim "$filePath" -usoD && clip_file;;
 	*) echo "program terminated" && exit 1;;
 esac
