@@ -93,8 +93,9 @@ vim.opt.cursorline = true
 -- keymaps
 vim.opt.hlsearch = true
 
+-- NOTE: I don't know what this is about?
 -- currecntly not working and don't know why. I sourcvim.keymap.vim.keymap.ed it manually and it works.
-vim.opt_local.formatoptions:remove "o"
+-- vim.opt_local.formatoptions:remove "o"
 
 --WHY NO WORK??????
 --vim.lsp.inlay_hint.enable()

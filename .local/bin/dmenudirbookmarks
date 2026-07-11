@@ -1,2 +1,9 @@
 #!/bin/sh -
-eval cd $(fzf < $HOME/.local/share/mybookmarks/directorybookmarks || exit )
+
+chosen="$(fzf < $HOME/.local/share/mybookmarks/directorybookmarks || exit 1)"
+
+if [ -n "$chosen" ]; then
+	eval cd "$chosen"
+else
+	exit 1
+fi

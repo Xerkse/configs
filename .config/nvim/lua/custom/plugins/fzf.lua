@@ -2,7 +2,8 @@ return {
 	{ -- fuzzy finder (files, lsp, etc)
 		"nvim-telescope/telescope.nvim",
 		event = "vimenter",
-		branch = "0.1.x",
+		version = "*",
+		-- branch = "0.1.x", This was not working * is working now, so thats a thing
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			{ -- if encountering errors, see telescope-fzf-native readme for install instructions

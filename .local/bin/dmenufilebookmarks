@@ -1,8 +1,10 @@
 #!/bin/sh -
-chosen="$(fzf < $HOME/.local/share/mybookmarks/filebookmarks || exit )"
+chosen="$(fzf < $HOME/.local/share/mybookmarks/filebookmarks || exit 1)"
 chosen="$(eval echo "$chosen")"
 
 if [ -n "$chosen" ]; then
 	cd "${chosen%/*}"
 	eval "$EDITOR" "$chosen"
+else
+	exit 1
 fi

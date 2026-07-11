@@ -32,6 +32,6 @@ chosen=$(cat ~/.local/share/larbs/chars/* | dmenu -i -l 30 | sed "s/ .*//")
 if [ -n "$1" ]; then
 	xdotool type "$chosen"
 else
-	printf "%s" "$chosen" | xclip -selection clipboard
+	clip -- "$chosen"
 	notify-send "'$chosen' copied to clipboard." &
 fi
