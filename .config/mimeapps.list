@@ -5,7 +5,6 @@ text/html=firefox.desktop
 x-scheme-handler/http=firefox.desktop
 x-scheme-handler/about=firefox.desktop
 x-scheme-handler/unknown=firefox.desktop
-
 audio/flac=mpv.desktop
 audio/mpeg=mpv.desktop
 audio/wav=mpv.desktop
@@ -14,7 +13,9 @@ audio/ogg=mpv.desktop
 audio/x-vorbis+ogg=mpv.desktop
 audio/mp4=mpv.desktop
 audio/x-m4a=mpv.desktop
-
 video/mp4=vlc.desktop
 video/x-matroska=vlc.desktop
 video/webm=vlc.desktop
+
+[Added Associations]
+application/octet-stream=calibre-gui.desktop;
